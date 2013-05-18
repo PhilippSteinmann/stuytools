@@ -12,7 +12,9 @@
 body
 {
     margin: 0;
+    color: rgb(10, 10, 10);
     font: 16px "Open Sans", Helvetica, sans-serif;
+
 } 
 /* ========================== */ 
 /* GLOBAL STYLE */
@@ -54,7 +56,7 @@ h3
     font-size: 21.3px;
 }
 
-button
+button, input
 {
     font: 16px "Open Sans", Helvetica, sans-serif;
 }
@@ -65,7 +67,7 @@ small
     color: rgb(100, 100, 100);
 }
 
-nav a, aside ul a
+nav a, input[type=submit]
 {
     display: block;
     max-width: 300px;
@@ -92,17 +94,56 @@ nav a, aside ul a
     -moz-transition: background 0.2s;
 }
 
-nav a:hover, aside ul a:hover
+nav a:hover, input[type=submit]:hover
 {
     background-image: -webkit-linear-gradient(top, rgb(0, 100, 150), rgb(0, 90, 130));
     cursor: pointer;
 }
 
-nav a:active, aside ul a:active
+nav a:active, input[type=submit]:active
 {
     -webkit-box-shadow: rgba(0, 0, 0, 0.14902) 0px 20px 40px 0px inset, rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
     -moz-box-shadow: rgba(0, 0, 0, 0.14902) 0px 20px 40px 0px inset, rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
     box-shadow: rgba(0, 0, 0, 0.14902) 0px 20px 40px 0px inset, rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
+}
+
+.announcements button, aside ul a
+{
+    width: 100%;
+    padding: 4px 8px;
+
+    border: 1px solid rgb(180, 180, 180);
+    border-bottom: 1px solid rgb(160, 160, 160);
+    border-radius: 2px;
+    outline: none;
+
+    color: rgb(10, 10, 10);
+
+    background-color: rgb(245, 245, 245);
+    background-image: -webkit-linear-gradient(top, rgb(245, 245, 245), rgb(225, 225, 225));
+    background-image: -moz-linear-gradient(top, rgb(245, 245, 245), rgb(225, 225, 225));
+
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9)
+}
+
+.announcements button:hover, aside ul a:hover
+{
+    cursor: pointer;
+    color: white;
+    text-shadow: none;
+
+    background-color: rgb(0, 100, 150);
+    background-image: -webkit-linear-gradient(top, rgb(0, 100, 150), rgb(0, 90, 140));
+    background-image: -moz-linear-gradient(top, rgb(0, 100, 150), rgb(0, 90, 140));
+
+    border-color: rgb(0, 100, 150) rgb(0, 100, 150) rgb(0, 80, 130);
+}
+
+.announcements button:active, aside ul a:active
+{
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
+    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
 }
 
 /* ========================== */ 
@@ -137,6 +178,11 @@ nav
 /* ========================== */
 /* NAV AREA */
 /* ========================== */ 
+.form-wrapper
+{
+    text-align: center;
+}
+
 ul
 { 
     margin-top: 0;
@@ -148,6 +194,37 @@ ul
 li a
 {
     text-decoration: none;
+}
+
+form
+{
+    display: inline-block;
+    padding: 10px;
+    margin: 20px auto;
+    
+    border: 5px solid rgba(0, 50, 255, 0.2);
+    border-radius: 3px;
+}
+
+nav label, nav input
+{
+    float: left;
+}
+
+nav label
+{
+    clear: left;
+    width: 100px;
+}
+
+nav input[type=submit]
+{
+    float: right;
+    clear: left;
+
+    /* Override nav button style */
+    margin-top: 10px;
+    padding: 6px 12px;
 }
 
 /* ========================== */
@@ -192,42 +269,6 @@ li a
     margin-bottom: 14px;
 }
 
-.announcements button
-{
-    width: 100%;
-    padding: 4px 8px;
-
-    border: 1px solid rgb(180, 180, 180);
-    border-bottom: 1px solid rgb(160, 160, 160);
-    border-radius: 2px;
-    outline: none;
-
-    background-color: rgb(245, 245, 245);
-    background-image: -webkit-linear-gradient(top, rgb(245, 245, 245), rgb(225, 225, 225));
-    background-image: -moz-linear-gradient(top, rgb(245, 245, 245), rgb(225, 225, 225));
-
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9)
-}
-
-.announcements button:hover
-{
-    cursor: pointer;
-    color: white;
-    text-shadow: none;
-
-    background-color: rgb(0, 100, 150);
-    background-image: -webkit-linear-gradient(top, rgb(0, 100, 150), rgb(0, 90, 140));
-    background-image: -moz-linear-gradient(top, rgb(0, 100, 150), rgb(0, 90, 140));
-
-    border-color: rgb(0, 100, 150) rgb(0, 100, 150) rgb(0, 80, 130);
-}
-
-.announcements button:active
-{
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
-    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
-    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
-}
 
 @media all and (max-width: 1050px)
 {
@@ -238,7 +279,6 @@ li a
     }
 }
 
-
 /* ========================== */
 /* PERSONAL INFO AREA */
 /* ========================== */
@@ -246,4 +286,10 @@ li a
 dl
 {
     margin-top: 0;
+}
+
+aside ul a
+{
+    display: inline-block;
+    margin-bottom: 14px;
 }
