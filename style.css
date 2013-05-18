@@ -78,9 +78,14 @@ nav, .school-info-area, .personal-info-area
     padding-top: 0.7%;
 }
 
-.school-info-area
+nav
 {
     background-color: rgb(240, 240, 240);
+}
+
+.school-info-area
+{
+    border-right: 1px solid rgb(200, 200, 200);
 }
 
 /* Used inside areas to give padding, because they have a definite width that would be increased and add up to > 100% if padding were added. */
@@ -198,7 +203,9 @@ nav a:active
     border-radius: 2px;
     outline: none;
 
-    background-color: transparent;
+    background-color: rgb(245, 245, 245);
+    background-image: -webkit-linear-gradient(top, rgb(245, 245, 245), rgb(225, 225, 225));
+    background-image: -moz-linear-gradient(top, rgb(245, 245, 245), rgb(225, 225, 225));
 
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9)
 }
@@ -230,4 +237,14 @@ nav a:active
         float: none;
         width: 100%;
     }
+}
+
+
+/* ========================== */
+/* PERSONAL INFO AREA */
+/* ========================== */
+
+dl
+{
+    margin-top: 0;
 }

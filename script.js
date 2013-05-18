@@ -10,8 +10,7 @@ function make_awesome()
     else
     {
         var student_area_content = '\ <form action="https://students-stuyhs.theschoolsystem.net/login.rb" method="POST"> \
-                    <label>Username: <input name="username" autofocus> \
-                    <label>Password: <input type="password"  name="password"> \
+                    <label>Username: <input name="username" autofocus> \ <label>Password: <input type="password"  name="password"> \
                 </form> \
         ';
     }
@@ -74,14 +73,25 @@ function make_awesome()
             <div class="personal-info-area"> \
                 <div class="padding-box"> \
                     <h2>Your Info </h2> \
+                    <dl> \
+                        <dt>Official Class </dt> \
+                            <dd>3GG </dd> \
+                        <dt>Homeroom</dt> \
+                            <dd>' + title_case("CAFE") + '</dd> \
+                        <dt>Homeroom Teacher</dt> \
+                            <dd>' + title_case("FANG") + '</dd> \
+                        <dt>Advisor</dt> \
+                            <dd>' + title_case("PARNES") + '</dd> \
+                        <dt>Email Addresses</dt> \
+                            <dd>steinmann.philipp@yahoo.com, steinmann.philipp@hotmail.com</dd> \
+                        <a href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> \
+                    </dl> \
                 </div> \
             </div> \
         </div> \
     ');
 }
-
-function logged_in()
-{
+function logged_in() {
 
     if (document.URL.indexOf("login") == -1)
         return true;
