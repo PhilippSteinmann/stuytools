@@ -57,12 +57,12 @@ function insert_nav_area()
         $("nav .padding-box").append(' \
             <h1>Philipp Steinmann </h1> \
             <ul> \
-                <li><a href="https://students-stuyhs.theschoolsystem.net/grade_check.rb">Report Card</a> </li> \
-                <li><a href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
-                <li><a href="https://students-stuyhs.theschoolsystem.net/schedule_check.rb">Schedule </a> </li> \
-                <li><a href="https://students-stuyhs.theschoolsystem.net/attendance.rb">Attendance </a> </li> \
-                <li><a href="https://students-stuyhs.theschoolsystem.net/transcripts.rb">Transcript </a> </li> \
-                <li><a href="https://students-stuyhs.theschoolsystem.net/teacher_rec_check.rb">Teacher Recommendations </a> </li> \
+                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb">Report Card</a> </li> \
+                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
+                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/schedule_check.rb">Schedule </a> </li> \
+                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/attendance.rb">Attendance </a> </li> \
+                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/transcripts.rb">Transcript </a> </li> \
+                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/teacher_rec_check.rb">Teacher Recommendations </a> </li> \
             </ul> \
         ');
     }
@@ -72,11 +72,12 @@ function insert_nav_area()
             <div class="form-wrapper"> \
                 <form action="https://students-stuyhs.theschoolsystem.net/login.rb" method="POST"> \
                     <label for="username">Username: </label> \
-                    <input name="username" id="username" autofocus required> \
+                    <input type="text" name="username" id="username" autofocus required autocomplete="off" > \
                     <label for="password">Password: </label> \
                     <input type="password" id="password"  name="password" required> \
                     \
-                    <input type="submit" value="Log In"> \
+                    <a href="">Forgot your password? </a> \
+                    <input type="submit" class="primary-button" value="Log In"> \
                 </form> \
             </div> \
         ');
@@ -106,19 +107,22 @@ function insert_school_area()
                     <h3>Announcements </h3> \
                     <ul> \
                         <li> \
-                            <button>' + title_case("FRESHMAN CAPTURES PSAL BOYS INDIVIDUAL GOLF CROWN") + ' \
+                            <a href="">' + title_case("FRESHMAN CAPTURES PSAL BOYS INDIVIDUAL GOLF CROWN") + ' \
                         </li> \
                         <li> \
-                            <button>' + title_case("ONLINE PROGRAMMING FOR FALL 2013 PHASE 2") + ' \
+                            <a href="">' + title_case("ONLINE PROGRAMMING FOR FALL 2013 PHASE 2") + ' \
                         </li> \
                         <li> \
-                            <button>' + title_case("***UPDATED*** LIBRARY SCHEDULE FOR APRIL 29-JUNE 10") + ' \
+                            <a href="">' + title_case("***UPDATED*** LIBRARY SCHEDULE FOR APRIL 29-JUNE 10") + ' \
                         </li> \
                         <li> \
-                            <button>' + title_case("REMINDER: TEACHER COMMENT SHEET & EXTRACURRICULAR ACTIVITIES SHEET") + ' \
+                            <a href="">' + title_case("REMINDER: TEACHER COMMENT SHEET & EXTRACURRICULAR ACTIVITIES SHEET") + ' \
                         </li> \
                         <li> \
-                            <button>' + title_case("APPLICATIONS FOR WORKING PAPERS") + ' \
+                            <a href="">' + title_case("APPLICATIONS FOR WORKING PAPERS") + ' \
+                        </li> \
+                        <li> \
+                            <a href="">' + title_case("AP EXAM SCHEDULE UPDATE") + ' \
                         </li> \
                     </ul> \
                 </div> \
@@ -135,22 +139,31 @@ function insert_personal_area()
             <aside> \
                 <div class="padding-box"> \
                     <h2>Your Info </h2> \
-                    <dl> \
-                        <dt>Official Class </dt> \
-                            <dd>3GG </dd> \
-                        <dt>Homeroom</dt> \
-                            <dd>' + title_case("CAFE") + '</dd> \
-                        <dt>Homeroom Teacher</dt> \
-                            <dd>' + title_case("FANG") + '</dd> \
-                        <dt>Advisor</dt> \
-                            <dd>' + title_case("PARNES") + '</dd> \
-                        <dt>Email Addresses</dt> \
-                            <dd>steinmann.philipp@yahoo.com, steinmann.philipp@hotmail.com</dd> \
-                        <a href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> \
-                    </dl> \
+                    <table> \
+                        <tr> \
+                            <td>Official Class</td> \
+                            <td>3GG </td> \
+                         </tr> \
+                        <tr> \
+                            <td>Homeroom </td> \
+                            <td>' + title_case("CAFE") + ' </td> \
+                         </tr> \
+                        <tr> \
+                            <td>Homeroom Teacher </td> \
+                            <td>' + title_case("FANG") + ' </td> \
+                         </tr> \
+                        <tr> \
+                            <td>Advisor </td> \
+                            <td>' + title_case("PARNES") + ' </td> \
+                         </tr> \
+                        <tr> \
+                            <td>Email Addresses </td> \
+                            <td>steinmann.philipp@yahoo.com, steinmann.philipp@hotmail.com <a class="secondary-button" href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> </td> \
+                         </tr> \
+                    </table> \
                     <ul> \
-                        <li><a href="https://students-stuyhs.theschoolsystem.net/locker_letter.rb">School Locker Info </a> </li> \
-                        <li><a href="https://students-stuyhs.theschoolsystem.net/locker_look.rb">PE Locker Info </a> </li> \
+                        <li><a class="secondary-button" href="https://students-stuyhs.theschoolsystem.net/locker_letter.rb">School Locker Info </a> </li> \
+                        <li><a class="secondary-button" href="https://students-stuyhs.theschoolsystem.net/locker_look.rb">PE Locker Info </a> </li> \
                     </ul> \
                 </div> \
             </div> \
@@ -163,8 +176,24 @@ function insert_personal_area()
     }
 }
 
+String.prototype.mindfulLowerCase = function()
+{
+    var words = this.split(" ");
+    var lowercase_str = "";
+    var special_words = ["PSAL", "AP"];
+    for (var i = 0; i < words.length; i++)
+    { 
+        if (special_words.indexOf(words[i]) == -1) // not a special word
+            lowercase_str += words[i].toLowerCase() + " ";
+        else // a special word, do not lowercase
+            lowercase_str += words[i] + " ";
+    }
+
+    return lowercase_str;
+}
+
 // from http://stackoverflow.com/a/12533554/805556, lightly modified 
-function title_case(e){var t=/^(a|an|and|as|at|but|by|en|for|if|in|of|on|psal|or|the|to|vs?\.?|via)$/i;return e.toLowerCase().replace(/([^\W_]+[^\s-]*) */g,function(e,n,r,i){return r>0&&r+n.length!==i.length&&n.search(t)>-1&&i.charAt(r-2)!==":"&&i.charAt(r-1).search(/[^\s-]/)<0?e.toLowerCase():n.substr(1).search(/[A-Z]|\../)>-1?e:e.charAt(0).toUpperCase()+e.substr(1)})};
+function title_case(e){var t=/^(a|an|and|as|at|but|by|en|for|if|in|of|on|psal|or|the|to|vs?\.?|via)$/i;return e.mindfulLowerCase().replace(/([^\W_]+[^\s-]*) */g,function(e,n,r,i){return r>0&&r+n.length!==i.length&&n.search(t)>-1&&i.charAt(r-2)!==":"&&i.charAt(r-1).search(/[^\s-]/)<0?e:n.substr(1).search(/[A-Z]|\../)>-1?e:e.charAt(0).toUpperCase()+e.substr(1)})};
 
 if (document.location.pathname == "/student_jobs.rb")
 {

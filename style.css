@@ -47,7 +47,7 @@ h1
 
 h2
 {
-    margin-bottom: 54px;
+    margin-bottom: 41.5px;
     font-size: 28.4px;
 }
 
@@ -67,7 +67,23 @@ small
     color: rgb(100, 100, 100);
 }
 
-nav a, input[type=submit]
+a
+{
+    text-decoration: none;
+    color: rgb(0, 70, 150);
+}
+
+a:hover
+{
+    text-decoration: underline;
+}
+
+.primary-button:hover, .secondary-button:hover
+{
+    text-decoration: none;
+}
+
+.primary-button
 {
     display: block;
     max-width: 300px;
@@ -94,21 +110,22 @@ nav a, input[type=submit]
     -moz-transition: background 0.2s;
 }
 
-nav a:hover, input[type=submit]:hover
+.primary-button:hover
 {
     background-image: -webkit-linear-gradient(top, rgb(0, 100, 150), rgb(0, 90, 130));
     cursor: pointer;
 }
 
-nav a:active, input[type=submit]:active
+.primary-button:active
 {
     -webkit-box-shadow: rgba(0, 0, 0, 0.14902) 0px 20px 40px 0px inset, rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
     -moz-box-shadow: rgba(0, 0, 0, 0.14902) 0px 20px 40px 0px inset, rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
     box-shadow: rgba(0, 0, 0, 0.14902) 0px 20px 40px 0px inset, rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
 }
 
-.announcements button, aside ul a
+.secondary-button
 {
+    display: block;
     width: 100%;
     padding: 4px 8px;
 
@@ -126,7 +143,7 @@ nav a:active, input[type=submit]:active
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9)
 }
 
-.announcements button:hover, aside ul a:hover
+.secondary-button:hover
 {
     cursor: pointer;
     color: white;
@@ -139,7 +156,7 @@ nav a:active, input[type=submit]:active
     border-color: rgb(0, 100, 150) rgb(0, 100, 150) rgb(0, 80, 130);
 }
 
-.announcements button:active, aside ul a:active
+.secondary-button:active
 {
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
@@ -209,22 +226,47 @@ form
 nav label, nav input
 {
     float: left;
+    margin-bottom: 10px;
+    margin-top: 0;
 }
 
 nav label
 {
     clear: left;
     width: 100px;
+    
+    position: relative;
+    top: 2px /* align with input */
+}
+
+nav input[type=text], nav input[type=password]
+{
+    border: 1px solid rgb(190, 190, 190);
+    border-radius: 3px;
+    box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.175);
+
+    padding: 4px;
+}
+
+nav input[type=text]:focus, nav input[type=password]:focus
+{
+    outline: none;
+}
+
+nav form a
+{
+    margin-top: 24px; /* 14 + 10 (padding-top of submit button) = 24 */
+    float: left;
+    clear: left;
 }
 
 nav input[type=submit]
 {
     float: right;
-    clear: left;
 
     /* Override nav button style */
-    margin-top: 10px;
-    padding: 6px 12px;
+    margin-top: 14px;
+    padding: 10px 22px;
 }
 
 /* ========================== */
@@ -269,7 +311,6 @@ nav input[type=submit]
     margin-bottom: 14px;
 }
 
-
 @media all and (max-width: 1050px)
 {
     .schedule
@@ -283,13 +324,45 @@ nav input[type=submit]
 /* PERSONAL INFO AREA */
 /* ========================== */
 
-dl
+aside table
 {
-    margin-top: 0;
+    margin-bottom: 20px;
+    border-collapse: collapse;
 }
 
-aside ul a
+aside tr
 {
+    border-bottom: 1px solid rgb(190, 190, 190);
+}
+
+aside tr:first-of-type
+{
+    border-top: 1px solid rgb(190, 190, 190);
+}
+
+aside td
+{
+    width: 50%;
+    padding: 10px 20px;
+}
+
+aside td:first-child
+{
+    font-weight: bold;
+}
+
+aside table .secondary-button
+{   
+    width: auto;
     display: inline-block;
+}
+
+aside li
+{
     margin-bottom: 14px;
+}
+
+aside ul .secondary-button
+{
+    width: 200px;
 }
