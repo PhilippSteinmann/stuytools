@@ -56,6 +56,7 @@ function insert_nav_area()
     {
         $("nav .padding-box").append(' \
             <h1>Philipp Steinmann </h1> \
+            <a class="secondary-button log-out" href="https://students-stuyhs.theschoolsystem.net/logoff.rb">Log Out </a> \
             <ul> \
                 <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb">Report Card</a> </li> \
                 <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
@@ -197,5 +198,5 @@ function title_case(e){var t=/^(a|an|and|as|at|but|by|en|for|if|in|of|on|psal|or
 
 if (document.location.pathname == "/student_jobs.rb")
 {
-    make_awesome();
 }
+    make_awesome();
