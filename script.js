@@ -1,15 +1,10 @@
-function make_awesome()
+function make_awesome() 
 {
+    var student_data = get_student_data();
+    alert("we're at " + document.URL + "\n\nstudent_data = " + student_data);
+
     insert_fonts();
-
-    var student_data = false;
-    if (logged_in())
-        var student_data = get_student_data();
-
-    document.title = "StuyTools";
-
     insert_page(student_data);
-
 }
 
 function insert_fonts()
@@ -21,30 +16,35 @@ function insert_fonts()
 
 function get_student_data()
 {
-    return {}
+    if ($("body").text() == "")
+        return false
+    else
+    {
+        return {}
+    }
 }
 
 function logged_in() 
 {
-    if (document.URL.indexOf("login") == -1)
-        return true;
-    else
-        return false;
+    var daedalusID_exists = false;
+    return daedalusID_exists;
 }
 
-function insert_page(data)
+function insert_page(student_data)
 {
+    document.title = "StuyTools";
+    
     $("body").html(' \
         <div class="content"> \
         </div> \
     ');
 
-    insert_nav_area(data);
-    insert_school_area(data);
-    insert_personal_area(data);
+    insert_nav_area(student_data);
+    insert_school_area(student_data);
+    insert_personal_area(student_data);
 }
 
-function insert_nav_area()
+function insert_nav_area(student_data)
 {
     $(".content").append('\
             <nav> \
@@ -52,7 +52,7 @@ function insert_nav_area()
             </nav> \
     ');
 
-    if (logged_in())
+    if (student_data)
     {
         $("nav .padding-box").append(' \
             <h1>Philipp Steinmann </h1> \
@@ -77,7 +77,7 @@ function insert_nav_area()
                     <label for="password">Password: </label> \
                     <input type="password" id="password"  name="password" required> \
                     \
-                    <a href="">Forgot your password? </a> \
+                    <a href="https://students-stuyhs.theschoolsystem.net/reset_password.rb">Forgot your password? </a> \
                     <input type="submit" class="primary-button" value="Log In"> \
                 </form> \
             </div> \
@@ -85,7 +85,7 @@ function insert_nav_area()
     }
 }
 
-function insert_school_area()
+function insert_school_area(student_data)
 {
     $(".content").append(' \
         <div class="school-info-area"> \
@@ -132,9 +132,9 @@ function insert_school_area()
     ');
 }
 
-function insert_personal_area()
+function insert_personal_area(student_data)
 {
-    if (logged_in())
+    if (student_data)
     {
         $(".content").append(' \
             <aside> \
@@ -193,10 +193,20 @@ String.prototype.mindfulLowerCase = function()
     return lowercase_str;
 }
 
+String.prototype.in = function(arr)
+{
+    return (arr.indexOf(this.toString()) != -1)
+}
+
 // from http://stackoverflow.com/a/12533554/805556, lightly modified 
 function title_case(e){var t=/^(a|an|and|as|at|but|by|en|for|if|in|of|on|psal|or|the|to|vs?\.?|via)$/i;return e.mindfulLowerCase().replace(/([^\W_]+[^\s-]*) */g,function(e,n,r,i){return r>0&&r+n.length!==i.length&&n.search(t)>-1&&i.charAt(r-2)!==":"&&i.charAt(r-1).search(/[^\s-]/)<0?e:n.substr(1).search(/[A-Z]|\../)>-1?e:e.charAt(0).toUpperCase()+e.substr(1)})};
 
-if (document.location.pathname == "/student_jobs.rb")
-{
+var redirect_paths = ["/login.rb", "/logoff.rb"];
+
+if (window.location.pathname.in(redirect_paths))
+{   
+    alert("redirecting...");
+    window.location.pathname = "student_jobs.rb";
 }
-    make_awesome();
+
+make_awesome();

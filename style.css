@@ -50,8 +50,7 @@ h2
     font-size: 28.4px;
 }
 
-h3
-{
+h3 {
     font-size: 21.3px;
 }
 
@@ -252,7 +251,7 @@ nav input[type=text], nav input[type=password]
     border-radius: 3px;
     box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.175);
 
-    padding: 4px;
+    padding: 6px 8px;
 }
 
 nav input[type=text]:focus, nav input[type=password]:focus
