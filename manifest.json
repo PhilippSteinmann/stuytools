@@ -11,5 +11,10 @@
             "css": ["style.css"],
             "js": ["jquery.js", "script.js"]
         }
+    ],
+
+    "permissions": [
+        "http://fonts.googleapis.com/*",
+        "http://stuy.enschool.org/*"
     ]
 }

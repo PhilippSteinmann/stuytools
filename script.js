@@ -1,7 +1,6 @@
 function make_awesome() 
 {
     var student_data = get_student_data();
-    // alert("we're at " + document.URL + "\n\nstudent_data = " + student_data);
 
     insert_fonts();
     insert_page(student_data);
@@ -211,3 +210,7 @@ if (window.location.pathname.in(redirect_paths))
 }
 else
     make_awesome();
+
+$.get("http://stuy.enschool.org", function(response) {
+    console.log(response); }
+);
