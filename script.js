@@ -1,7 +1,7 @@
 function make_awesome() 
 {
     var student_data = get_student_data();
-    alert("we're at " + document.URL + "\n\nstudent_data = " + student_data);
+    // alert("we're at " + document.URL + "\n\nstudent_data = " + student_data);
 
     insert_fonts();
     insert_page(student_data);
@@ -78,6 +78,8 @@ function insert_nav_area(student_data)
                     <input type="password" id="password"  name="password" required> \
                     \
                     <a href="https://students-stuyhs.theschoolsystem.net/reset_password.rb">Forgot your password? </a> \
+                    <!-- the S.O.B. below caused a day of frustration and fruitless testing. note to anybody out there: make sure to include hidden and seemingly unrelated form fields! !--> \
+                    <input type="hidden" name="button" value="login"> \
                     <input type="submit" class="primary-button" value="Log In"> \
                 </form> \
             </div> \
@@ -205,8 +207,7 @@ var redirect_paths = ["/login.rb", "/logoff.rb"];
 
 if (window.location.pathname.in(redirect_paths))
 {   
-    alert("redirecting...");
     window.location.pathname = "student_jobs.rb";
 }
-
-make_awesome();
+else
+    make_awesome();
