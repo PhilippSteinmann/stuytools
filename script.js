@@ -8,8 +8,7 @@ function make_awesome()
 
 function insert_fonts()
 {
-    var link_node = document.createElement("link");
-    link_node.rel = "stylesheet";
+    var link_node = document.createElement("link"); link_node.rel = "stylesheet";
     link_node.href = 'https://fonts.googleapis.com/css?family=Open+Sans:400,800,700';
     document.head.appendChild(link_node); }
 
@@ -21,13 +20,15 @@ function get_student_data()
     else
     {
         console.log(page_content);
-        var regex = /Current user: (\w+, \w+)/;
+        var regex = /Current user: (\w+, \w+)[.\n]*Official Class: (.{3})/;
         var results = regex.exec(page_content);
         console.log(results);
         
         var name = parse_student_name(results[1]);
+        var off_class = results[2];
         var student_data = { 
-            name: name
+            name: name,
+            off_class: off_class
         }
 
         chrome.runtime.sendMessage({type: "set", student_data: student_data});
@@ -172,7 +173,7 @@ function insert_personal_area(student_data)
                     <table> \
                         <tr> \
                             <td>Official Class</td> \
-                            <td>3GG </td> \
+                            <td>' + student_data["off_class"] + '</td> \
                          </tr> \
                         <tr> \
                             <td>Homeroom </td> \
