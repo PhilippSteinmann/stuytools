@@ -13,8 +13,12 @@
         }
     ],
 
+    "background": {
+        "scripts": ["background.js"]
+    }, 
+
     "permissions": [
-        "http://fonts.googleapis.com/*",
-        "http://stuy.enschool.org/*"
+        "cookies",
+        "https://students-stuyhs.theschoolsystem.net/"
     ]
 }

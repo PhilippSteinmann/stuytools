@@ -15,11 +15,39 @@ function insert_fonts()
 
 function get_student_data()
 {
-    if ($("body").text() == "")
+    var page_content = $("body").text();
+    if (page_content == "")
         return false
     else
     {
-        return {}
+        console.log(page_content);
+        var regex = /Current user: (\w+, \w+)/;
+        var results = regex.exec(page_content);
+        console.log(results);
+        
+        var name = parse_student_name(results[1]);
+        var student_data = { 
+            name: name
+        }
+
+        chrome.runtime.sendMessage({type: "set", student_data: student_data});
+
+        return student_data;
+    }
+}
+
+function parse_student_name(name)
+{
+    var split_name = name.split(",");
+    var first = split_name[1].slice(1);
+    var last = split_name[0];
+
+    first = title_case(first);
+    last = title_case(last);
+
+    return {
+        first: first,
+        last: last
     }
 }
 
@@ -54,7 +82,7 @@ function insert_nav_area(student_data)
     if (student_data)
     {
         $("nav .padding-box").append(' \
-            <h1>Philipp Steinmann </h1> \
+            <h1>' + student_data["name"]["first"] + " " + student_data["name"]["last"] + '</h1> \
             <a class="secondary-button log-out" href="https://students-stuyhs.theschoolsystem.net/logoff.rb">Log Out </a> \
             <ul> \
                 <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb">Report Card</a> </li> \
@@ -185,12 +213,19 @@ String.prototype.mindfulLowerCase = function()
     var special_words = ["PSAL", "AP"];
     for (var i = 0; i < words.length; i++)
     { 
-        if (special_words.indexOf(words[i]) == -1) // not a special word
-            lowercase_str += words[i].toLowerCase() + " ";
+        if (!words[i].in(special_words)) // not a special word
+        {
+            lowercase_str += words[i].toLowerCase();
+            if (i != words.length - 1)
+                lowercase_str += " ";
+        }
         else // a special word, do not lowercase
-            lowercase_str += words[i] + " ";
+        {
+            lowercase_str += words[i];
+            if (i != words.length - 1)
+                lowercase_str += " ";
+        }
     }
-
     return lowercase_str;
 }
 
@@ -210,7 +245,3 @@ if (window.location.pathname.in(redirect_paths))
 }
 else
     make_awesome();
-
-$.get("http://stuy.enschool.org", function(response) {
-    console.log(response); }
-);
