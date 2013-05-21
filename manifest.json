@@ -3,7 +3,7 @@
     "version": "1.0",
     "manifest_version": 2,
 
-    "description": "Student Tools for Humans",
+    "description": "A modern and efficient interface to Student Tools.",
 
     "content_scripts": [
         {
