@@ -19,24 +19,24 @@ function get_student_data()
         return false
     else
     {
-        console.log(page_content);
+        //console.log(page_content);
         var name_results = scan_page(/Current user: (\w+, \w+)[.\n]*/, page_content);
-        console.log(name_results);
+        //console.log(name_results);
 
         var class_results = scan_page(/Official Class: (.{3})([ \n]*)/, page_content);
-        console.log(class_results);
+        //console.log(class_results);
 
         var room_results = scan_page(/Official Class Room: (\w+)/, page_content);
-        console.log(room_results);
+        //console.log(room_results);
 
         var teacher_results = scan_page(/Official Class Teacher: (\w+)/, page_content);
-        console.log(teacher_results);
+        //console.log(teacher_results);
 
         var advisor_results = scan_page(/Advisor: (\w+)/, page_content);
-        console.log(advisor_results);
+        //console.log(advisor_results);
 
         var email_results = scan_page(/email address as: (.*)If/, page_content);
-        console.log(email_results);
+        //console.log(email_results);
         
         var name = parse_student_name(name_results[1]);
         var off_class = class_results[1];
@@ -112,7 +112,8 @@ function insert_nav_area(student_data)
     {
         $("nav .padding-box").append(' \
             <h1>' + student_data["name"]["first"] + " " + student_data["name"]["last"] + '</h1> \
-            <a class="secondary-button log-out" href="https://students-stuyhs.theschoolsystem.net/logoff.rb">Log Out </a> \
+            <a class="secondary-button logout" href="https://students-stuyhs.theschoolsystem.net/logoff.rb">Log Out </a> \
+            <button class="secondary-button your-info" href="#">Your Info </button> \
             <ul> \
                 <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb">Report Card</a> </li> \
                 <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \

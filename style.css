@@ -11,8 +11,7 @@
 
 body
 {
-    margin: 0;
-    color: rgb(10, 10, 10);
+    margin: 0; color: rgb(10, 10, 10);
     font: 16px "Open Sans", Helvetica, sans-serif;
 
 } 
@@ -127,6 +126,7 @@ a:hover
 {
     display: inline-block;
     padding: 4px 8px;
+    margin: 0;
 
     border: 1px solid rgb(180, 180, 180);
     border-bottom: 1px solid rgb(160, 160, 160);
@@ -201,16 +201,29 @@ nav
 /* NAV AREA */
 /* ========================== */ 
 
-.log-out
+nav h1
 {
-    position: absolute;
-    top: 0;
-    right: 5px;
+    float: left;
+}
+
+.your-info
+{
+    display: none;
+}
+
+.logout, .your-info
+{
+    float: right;
 }
 
 .form-wrapper
 {
     text-align: center;
+}
+
+nav ul
+{
+    clear: both;
 }
 
 ul
@@ -386,4 +399,27 @@ span.block + span.block
 {
     margin-top: 6px;
     margin-bottom: 10px;
+}
+
+@media all and (max-width: 1366px)
+{
+    nav, .school-info-area
+    {
+        width: 50%;
+    }
+
+    aside
+    {
+        position: absolute;
+        top: 0;
+        right: 40px;
+        height: auto;
+    
+        background-color: white;
+        box-shadow: 4px 0 40px 10px rgb(150, 150, 150), -4px 0 40px 10px rgb(150, 150, 150);
+    }
+    .your-info
+    {
+        display: inline;
+    }
 }
