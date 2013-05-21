@@ -20,21 +20,50 @@ function get_student_data()
     else
     {
         console.log(page_content);
-        var regex = /Current user: (\w+, \w+)[.\n]*Official Class: (.{3})/;
-        var results = regex.exec(page_content);
-        console.log(results);
+        var name_results = scan_page(/Current user: (\w+, \w+)[.\n]*/, page_content);
+        console.log(name_results);
+
+        var class_results = scan_page(/Official Class: (.{3})([ \n]*)/, page_content);
+        console.log(class_results);
+
+        var room_results = scan_page(/Official Class Room: (\w+)/, page_content);
+        console.log(room_results);
+
+        var teacher_results = scan_page(/Official Class Teacher: (\w+)/, page_content);
+        console.log(teacher_results);
+
+        var advisor_results = scan_page(/Advisor: (\w+)/, page_content);
+        console.log(advisor_results);
+
+        var email_results = scan_page(/email address as: (.*)If/, page_content);
+        console.log(email_results);
         
-        var name = parse_student_name(results[1]);
-        var off_class = results[2];
+        var name = parse_student_name(name_results[1]);
+        var off_class = class_results[1];
+        var off_room = title_case(room_results[1]);
+        var hr_teacher = title_case(teacher_results[1]);
+        var advisor = title_case(advisor_results[1]);
+        var emails = email_results[1];
+   
+
         var student_data = { 
             name: name,
-            off_class: off_class
+            off_class: off_class,
+            off_room: off_room,
+            hr_teacher: hr_teacher,
+            advisor: advisor,
+            emails: emails
         }
 
         chrome.runtime.sendMessage({type: "set", student_data: student_data});
 
         return student_data;
     }
+}
+
+function scan_page(regex, page_content)
+{
+    return regex.exec(page_content);
 }
 
 function parse_student_name(name)
@@ -52,8 +81,7 @@ function parse_student_name(name)
     }
 }
 
-function logged_in() 
-{
+function logged_in() {
     var daedalusID_exists = false;
     return daedalusID_exists;
 }
@@ -67,7 +95,7 @@ function insert_page(student_data)
         </div> \
     ');
 
-    insert_nav_area(student_data);
+    insert_nav_area(student_data); 
     insert_school_area(student_data);
     insert_personal_area(student_data);
 }
@@ -166,6 +194,14 @@ function insert_personal_area(student_data)
 {
     if (student_data)
     {
+        email_html = "";
+        student_data["emails"].split(",").forEach(
+            function(email)
+            {
+                email_html += "<span class='block'>" + email + "</span>";
+            }
+        );
+
         $(".content").append(' \
             <aside> \
                 <div class="padding-box"> \
@@ -177,19 +213,22 @@ function insert_personal_area(student_data)
                          </tr> \
                         <tr> \
                             <td>Homeroom </td> \
-                            <td>' + title_case("CAFE") + ' </td> \
+                            <td>' + student_data["off_room"] + ' </td> \
                          </tr> \
                         <tr> \
                             <td>Homeroom Teacher </td> \
-                            <td>' + title_case("FANG") + ' </td> \
+                            <td>' + student_data["hr_teacher"] + ' </td> \
                          </tr> \
                         <tr> \
                             <td>Advisor </td> \
-                            <td>' + title_case("PARNES") + ' </td> \
+                            <td>' + student_data["advisor"] + ' </td> \
                          </tr> \
                         <tr> \
                             <td>Email Addresses </td> \
-                            <td>steinmann.philipp@yahoo.com, steinmann.philipp@hotmail.com <a class="secondary-button" href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> </td> \
+                            <td> \
+                            ' + email_html + ' \
+                                <a class="secondary-button" href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> \
+                            </td> \
                          </tr> \
                     </table> \
                     <ul> \

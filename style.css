@@ -51,7 +51,8 @@ h2
     font-size: 28.4px;
 }
 
-h3 {
+h3 
+{
     font-size: 21.3px;
 }
 
@@ -159,6 +160,11 @@ a:hover
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
     -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1470588) 0px 2px 4px 0px;
+}
+
+.block
+{
+    display: block;
 }
 
 /* ========================== */ 
@@ -315,6 +321,12 @@ nav input[type=submit]
     clear: left; /* Float from schedules */
 }   
 
+.announcements ul
+{
+    margin-left: 20px;
+    list-style-type: disc;
+}
+
 .announcements li
 {
     margin-bottom: 14px;
@@ -368,4 +380,10 @@ aside li
 aside ul .secondary-button
 {
     width: 200px;
+}
+
+span.block + span.block
+{
+    margin-top: 6px;
+    margin-bottom: 10px;
 }
