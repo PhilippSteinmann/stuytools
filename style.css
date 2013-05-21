@@ -9,9 +9,11 @@
 - Mika Jain
 */
 
-body
+html, body
 {
-    margin: 0; color: rgb(10, 10, 10);
+    height: 100%; 
+    margin: 0; 
+    color: rgb(10, 10, 10);
     font: 16px "Open Sans", Helvetica, sans-serif;
 
 } 
@@ -171,15 +173,45 @@ a:hover
 /* PAGE STRUCTURE */
 /* ========================== */
 
-nav, .school-info-area, aside
+.content
 {
-    float: left;
+    height: 100%;
+}
+
+header
+{
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.school-info-area
+{
+    position: absolute;
+    left: 33%;
+}
+
+aside
+{
+    position: absolute;
+    left: 66%;
+}
+
+.page-area
+{
+    position: absolute;
+    width: 66%;
+    left: 33%;
+}
+
+header, .school-info-area, aside
+{
     width: 33%;
     height: 100%;
     padding-top: 0.7%;
 }
 
-nav
+header
 {
     background-color: rgb(240, 240, 240);
 }
@@ -198,17 +230,23 @@ nav
 
 
 /* ========================== */
-/* NAV AREA */
+/* header AREA */
 /* ========================== */ 
 
-nav h1
+header h1
 {
     float: left;
+    margin-top: 30px;
 }
 
 .your-info
 {
     display: none;
+}
+
+.your-info.aside-is-popup
+{
+    display: inline;
 }
 
 .logout, .your-info
@@ -221,9 +259,28 @@ nav h1
     text-align: center;
 }
 
-nav ul
+header ul
 {
     clear: both;
+}
+
+.logo
+{
+    font-size: 21px;
+    color: black;
+}
+
+.logo:hover
+{
+    text-decoration: none;
+}
+
+.logo .stuy
+{
+    background-color: rgb(0, 150, 0);
+    color: white;
+    padding: 10px;
+    margin-right: 4px;
 }
 
 ul
@@ -249,14 +306,14 @@ form
     border-radius: 3px;
 }
 
-nav label, nav input
+header label, header input
 {
     float: left;
     margin-bottom: 10px;
     margin-top: 0;
 }
 
-nav label
+header label
 {
     clear: left;
     width: 100px;
@@ -265,7 +322,7 @@ nav label
     top: 2px /* align with input */
 }
 
-nav input[type=text], nav input[type=password]
+header input[type=text], header input[type=password]
 {
     border: 1px solid rgb(190, 190, 190);
     border-radius: 3px;
@@ -274,25 +331,25 @@ nav input[type=text], nav input[type=password]
     padding: 4px 6px;
 }
 
-nav input[type=text]:focus, nav input[type=password]:focus
+header input[type=text]:focus, header input[type=password]:focus
 {
     outline: none;
     border-color: transparent;
     box-shadow: 0 0 10px 1px rgb(0, 100, 255);
 }
 
-nav form a
+header form a
 {
     margin-top: 24px; /* 14 + 10 (padding-top of submit button) = 24 */
     float: left;
     clear: left;
 }
 
-nav input[type=submit]
+header input[type=submit]
 {
     float: right;
 
-    /* Override nav button style */
+    /* Override header button style */
     margin-top: 14px;
     padding: 10px 22px;
 }
@@ -305,6 +362,7 @@ nav input[type=submit]
 {
     float: left;
     width: 50%;
+    max-width: 250px; /* let's not get crazy here */
 }
 
 .today
@@ -318,8 +376,7 @@ nav input[type=submit]
 }
 
 .schedule span
-{
-    display: block;
+{ display: block;
     margin-bottom: 10px;
 }
 
@@ -345,18 +402,26 @@ nav input[type=submit]
     margin-bottom: 14px;
 }
 
-@media all and (max-width: 1050px)
-{
-    .schedule
-    {
-        float: none;
-        width: 100%;
-    }
-}
-
 /* ========================== */
 /* PERSONAL INFO AREA */
 /* ========================== */
+
+aside
+{
+    display: block; /* Ensure that it'll be visible when the user makes window larger (JS might've hidden it) */
+}
+
+aside.popup
+{
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 40px;
+    height: auto;
+
+    background-color: white;
+    box-shadow: 4px 0 40px 10px rgb(150, 150, 150), -4px 0 40px 10px rgb(150, 150, 150);
+}
 
 aside table
 {
@@ -401,16 +466,17 @@ span.block + span.block
     margin-bottom: 10px;
 }
 
+
 @media all and (max-width: 1366px)
 {
-    nav, .school-info-area
+    .school-info-area
     {
-        width: 50%;
+        width: 66%;
     }
 
     aside
     {
-        position: absolute;
+        display: none;
         top: 0;
         right: 40px;
         height: auto;
@@ -418,6 +484,7 @@ span.block + span.block
         background-color: white;
         box-shadow: 4px 0 40px 10px rgb(150, 150, 150), -4px 0 40px 10px rgb(150, 150, 150);
     }
+
     .your-info
     {
         display: inline;

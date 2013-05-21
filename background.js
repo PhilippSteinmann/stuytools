@@ -16,5 +16,20 @@ chrome.runtime.onMessage.addListener(
                 }
             );
         }
+
+        else if (request["type"] == "get")
+        {
+            chrome.cookies.get(
+                {
+                    url: "https://students-stuyhs.theschoolsystem.net/",
+                    name: "student_data"
+                },
+                function(cookie)
+                {
+                    sendResponse(cookie.value);
+                }
+            );
+        }
+        return true; //required if we want to sendResponse from a callback
     } 
 );

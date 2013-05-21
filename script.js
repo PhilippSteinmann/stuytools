@@ -1,9 +1,7 @@
 function make_awesome() 
 {
-    var student_data = get_student_data();
-
     insert_fonts();
-    insert_page(student_data);
+    get_student_data();
 }
 
 function insert_fonts()
@@ -16,48 +14,60 @@ function get_student_data()
 {
     var page_content = $("body").text();
     if (page_content == "")
-        return false
+        insert_page(false)
+
     else
     {
-        //console.log(page_content);
-        var name_results = scan_page(/Current user: (\w+, \w+)[.\n]*/, page_content);
-        //console.log(name_results);
+        if (window.location.pathname == "/student_jobs.rb")
+        {
+            //console.log(page_content);
+            var name_results = scan_page(/Current user: (\w+, \w+)[.\n]*/, page_content);
+            //console.log(name_results);
 
-        var class_results = scan_page(/Official Class: (.{3})([ \n]*)/, page_content);
-        //console.log(class_results);
+            var class_results = scan_page(/Official Class: (.{3})([ \n]*)/, page_content);
+            //console.log(class_results);
 
-        var room_results = scan_page(/Official Class Room: (\w+)/, page_content);
-        //console.log(room_results);
+            var room_results = scan_page(/Official Class Room: (\w+)/, page_content);
+            //console.log(room_results);
 
-        var teacher_results = scan_page(/Official Class Teacher: (\w+)/, page_content);
-        //console.log(teacher_results);
+            var teacher_results = scan_page(/Official Class Teacher: (\w+)/, page_content);
+            //console.log(teacher_results);
 
-        var advisor_results = scan_page(/Advisor: (\w+)/, page_content);
-        //console.log(advisor_results);
+            var advisor_results = scan_page(/Advisor: (\w+)/, page_content);
+            //console.log(advisor_results);
 
-        var email_results = scan_page(/email address as: (.*)If/, page_content);
-        //console.log(email_results);
-        
-        var name = parse_student_name(name_results[1]);
-        var off_class = class_results[1];
-        var off_room = title_case(room_results[1]);
-        var hr_teacher = title_case(teacher_results[1]);
-        var advisor = title_case(advisor_results[1]);
-        var emails = email_results[1];
-   
+            var email_results = scan_page(/email address as: (.*)If/, page_content);
+            //console.log(email_results);
+            
+            var name = parse_student_name(name_results[1]);
+            var off_class = class_results[1];
+            var off_room = title_case(room_results[1]);
+            var hr_teacher = title_case(teacher_results[1]);
+            var advisor = title_case(advisor_results[1]);
+            var emails = email_results[1];
+       
 
-        var student_data = { 
-            name: name,
-            off_class: off_class,
-            off_room: off_room,
-            hr_teacher: hr_teacher,
-            advisor: advisor,
-            emails: emails
+            var student_data = { 
+                name: name,
+                off_class: off_class,
+                off_room: off_room,
+                hr_teacher: hr_teacher,
+                advisor: advisor,
+                emails: emails
+            }
+
+            chrome.runtime.sendMessage({type: "set", student_data: student_data});
+            insert_page(student_data);
         }
-
-        chrome.runtime.sendMessage({type: "set", student_data: student_data});
-
-        return student_data;
+        else
+        {
+            chrome.runtime.sendMessage({type: "get"},
+                function(response)
+                {   
+                    insert_page(JSON.parse(response));
+                }
+            );
+        }
     }
 }
 
@@ -89,31 +99,47 @@ function logged_in() {
 function insert_page(student_data)
 {
     document.title = "StuyTools";
+
+    previous_content = $("body").html();
     
     $("body").html(' \
         <div class="content"> \
         </div> \
     ');
 
-    insert_nav_area(student_data); 
-    insert_school_area(student_data);
-    insert_personal_area(student_data);
+    insert_header(student_data); 
+    if (window.location.pathname == "/student_jobs.rb")
+    {
+        insert_school_area(student_data);
+        insert_personal_area(student_data, false);
+    }
+    else
+    {
+        insert_content(student_data, previous_content);
+        insert_personal_area(student_data, true);
+    }
+    attach_listeners();
 }
 
-function insert_nav_area(student_data)
+function insert_header(student_data)
 {
     $(".content").append('\
-            <nav> \
-                <div class="padding-box"> </div> \
-            </nav> \
+            <header> \
+                <div class="padding-box"> \
+                    <a href="https://students-stuyhs.theschoolsystem.net/student_jobs.rb" class="logo"> \
+                        <span class="stuy">Stuy </span> \
+                        Tools \
+                    </a> \
+                </div> \
+            </header> \
     ');
 
     if (student_data)
     {
-        $("nav .padding-box").append(' \
-            <h1>' + student_data["name"]["first"] + " " + student_data["name"]["last"] + '</h1> \
+        $("header .padding-box").append(' \
             <a class="secondary-button logout" href="https://students-stuyhs.theschoolsystem.net/logoff.rb">Log Out </a> \
             <button class="secondary-button your-info" href="#">Your Info </button> \
+            <h1>' + student_data["name"]["first"] + " " + student_data["name"]["last"] + '</h1> \
             <ul> \
                 <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb">Report Card</a> </li> \
                 <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
@@ -126,7 +152,7 @@ function insert_nav_area(student_data)
     }
     else
     {
-        $("nav .padding-box").append(' \
+        $("header .padding-box").append(' \
             <div class="form-wrapper"> \
                 <form action="https://students-stuyhs.theschoolsystem.net/login.rb" method="POST"> \
                     <label for="username">Username: </label> \
@@ -191,7 +217,18 @@ function insert_school_area(student_data)
     ');
 }
 
-function insert_personal_area(student_data)
+function insert_content(student_data, previous_content)
+{
+    $(".content").append(' \
+        <div class="page-area"> \
+            <div class="padding-box"> \
+            ' + previous_content + ' \
+            </div> \
+        </div> \
+    ');
+}
+
+function insert_personal_area(student_data, popup)
 {
     if (student_data)
     {
@@ -203,8 +240,11 @@ function insert_personal_area(student_data)
             }
         );
 
+        if (popup)
+            $(".your-info").addClass("aside-is-popup");
+
         $(".content").append(' \
-            <aside> \
+            <aside ' + (popup ? 'class="popup"' : '') + '> \
                 <div class="padding-box"> \
                     <h2>Your Info </h2> \
                     <table> \
@@ -243,8 +283,17 @@ function insert_personal_area(student_data)
     }
     else
     {
-    
     }
+}
+
+function attach_listeners()
+{
+    $(".your-info").click(
+        function()
+        {
+            $("aside").fadeToggle(300);
+        }
+    );
 }
 
 String.prototype.mindfulLowerCase = function()
@@ -285,4 +334,4 @@ if (window.location.pathname.in(redirect_paths))
     window.location.pathname = "student_jobs.rb";
 }
 else
-    make_awesome();
+    get_student_data();
