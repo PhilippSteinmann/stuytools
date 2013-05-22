@@ -291,7 +291,7 @@ function attach_listeners()
     $(".your-info").click(
         function()
         {
-            $("aside").fadeToggle(300);
+            $("aside").slideToggle(300);
         }
     );
 }
