@@ -13,6 +13,9 @@ function insert_fonts()
 
 function get_student_data()
 {
+    var runtime_or_extension = chrome.runtime && chrome.runtime.sendMessage ?
+                                            'runtime': 'extension'; //Chrome 26+ uses runtime
+
     var page_content = $("body").text();
     if (page_content == "")
         insert_page(false)
@@ -56,12 +59,12 @@ function get_student_data()
                 emails: emails
             }
 
-            chrome.runtime.sendMessage({type: "set", student_data: student_data});
+            chrome[runtime_or_extension].sendMessage({type: "set", student_data: student_data});
             insert_page(student_data);
         }
         else
         {
-            chrome.runtime.sendMessage({type: "get"},
+            chrome[runtime_or_extension].sendMessage({type: "get"},
                 function(response)
                 {   
                     insert_page(JSON.parse(response));
