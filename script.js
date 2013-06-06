@@ -24,23 +24,17 @@ function get_student_data()
     {
         if (window.location.pathname == "/student_jobs.rb")
         {
-            //console.log(page_content);
             var name_results = scan_page(/Current user: (\w+, \w+)[.\n]*/, page_content);
-            //console.log(name_results);
 
-            var class_results = scan_page(/Official Class: (.{3})([ \n]*)/, page_content); //console.log(class_results);
+            var class_results = scan_page(/Official Class: (.{3})([ \n]*)/, page_content);
 
             var room_results = scan_page(/Official Class Room: (\w+)/, page_content);
-            //console.log(room_results);
 
             var teacher_results = scan_page(/Official Class Teacher: (\w+)/, page_content);
-            //console.log(teacher_results);
 
             var advisor_results = scan_page(/Advisor: (\w+)/, page_content);
-            //console.log(advisor_results);
 
             var email_results = scan_page(/email address as: (.*)If/, page_content);
-            //console.log(email_results);
             
             var name = parse_student_name(name_results[1]);
             var off_class = class_results[1];

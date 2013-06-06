@@ -1,52 +1,246 @@
-function fetch_stuy_schedule()
+function create_stuy_schedule()
 {
-    return "";
+    var url = "http://stuy.enschool.org/apps/events/show_event.jsp?REC_ID=927665&id=1";
+    $.get(url, 
+        function(raw_html)
+        {
+            schedule = parse_stuy_schedule(raw_html);
+            schedule_html = generate_schedule_html(schedule);
+            inject_schedule_html(schedule_html);
+        }
+    );
 }
 
-function generate_schedule_html(schedules)
+function parse_stuy_schedule(raw_html)
+{
+    var schedule = {};
+
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(raw_html, "text/html");
+    var text = doc.querySelector("body").innerText;
+
+    var today = new Date();
+    var tomorrow = new Date(
+            today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
+
+    days_to_check = [today, tomorrow];
+
+    days_to_check.forEach(
+        function(day)
+        {
+            var year = day.getFullYear();
+            var month = day.getMonth();
+            var date = day.getDate();
+
+            var human_month = get_human_month(month).toUpperCase();
+            var regex = new RegExp(human_month + " " + date + "\\s(.+) Bell Schedule.*(\\D\\d)");
+            var results = scan_page(regex, text);
+            if (results)
+            {
+                var bell_schedule = results[1];
+                var block = results[2];
+                
+                var human_date = day.toDateString();
+
+                schedule[human_date] = 
+                {
+                    bell_schedule: bell_schedule,
+                    block: block
+                }
+            }
+        }
+    );
+    return schedule
+}
+
+function generate_schedule_html(schedule)
 {
     var html = "";
 
     var today = new Date();
-    var year = today.getFullYear();
-    var month = today.getMonth() + 1;
-    var day = today.getDate();
-    var weekday = today.getDay();
+    var today_str = today.toDateString();
 
-    var today_str = year + "-" + month + "-" + day;
-    if (today_str in schedules)
+    var tomorrow = new Date(
+            today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    var tomorrow_str = tomorrow.toDateString();
+
+
+    for (date_str in schedule)
     {
-        var today_schedule = schedules[today_str];
+        if (schedule.hasOwnProperty(date_str))
+        {
+            var day = schedule[date_str];
+            var bell_schedule = day["bell_schedule"];
+            var block = day["block"];
+
+            var weekday = new Date(date_str).getDay();
+
+            var human_weekday = title_case(get_human_weekday(weekday));
+
+            if (date_str == today_str)
+            {
+                html += '\
+                        <div class="day today"> \
+                            <span class="date"> \
+                                <h3>' + human_weekday + '</h3> \
+                                <small>(today) </small> \
+                            </span> \
+                            <span class="type">' + bell_schedule + ' | ' + block + '</span> \
+                        ';
+
+                if (today.getHours() < 16)
+                    html += generate_clock(bell_schedule);
+
+                html += generate_clock(bell_schedule); //only for testing, remove later
+                html += "</div>";
+            }
+            else if (date_str == tomorrow_str)
+            {
+                html += '\
+                    <div class="day tomorrow"> \
+                        <span class="date"> \
+                            <strong>' + human_weekday + '</strong> \
+                                <small>(tomorrow) </small> \
+                        </span> \
+                        <span class="type">' + bell_schedule + ' | ' + block + '</span> \
+                    </div> \
+                        ';
+            }
+        }
+    }
+    if (today_str in schedule)
+    {
+        var today_schedule = schedule[today_str];
         var bell_schedule = today_schedule["bell_schedule"];
         var block = today_schedule["block"];
 
         var human_weekday = get_human_weekday(weekday);
 
-        html += '\
-                <div class="schedule today"> \
-                    <span class="date"> \
-                        <h3>' + human_weekday + '</h3> \
-                        <small>(today) </small> \
-                    </span> \
-                    <span class="type">' + bell_schedule + ' | ' + block + '</span> \
-                ';
-
-        if (today.getHours() <= 16)
-            html += generate_schedule_clock(bell_schedule);
-        html += "</div>";
             
     }
-    else
-    {
 
+    else
+    { 
+        
     }
     return html;
+}
+
+
+function generate_clock(bell_schedule)
+{
+    var period_times = get_period_times(bell_schedule);
+
+    setInterval(
+        function()
+        {
+            updateClock(period_times)
+        }, 
+        1 * 1000
+    );
+
+    return ' \
+    <span class="clock"> \
+        Period <span class="period"> </span> \
+        (<span class="time-left"> </span> \
+         <span class="time-sec-or-min"></span> \
+         <span class="time-left-text"></span>) \
+    </span> \
+    '
+}
+
+function updateClock(period_times)
+{
+    var clock = $(".clock");
+    var now = new Date();
+    now = new Date(now.getTime() - 200 * 60 * 1000);
+
+    for (var period in period_times)
+    {
+        if (period_times.hasOwnProperty(period))
+        {
+            period_time = period_times[period];
+            start = period_time[0];
+            end = period_time[1]
+
+            if (now > start && now < end)
+            {
+                seconds_left = Math.round((end - now) / 1000); // in seconds
+                minutes_left = Math.round(seconds_left / 60); //in minutes
+
+                if (seconds_left >= 5 * 60)
+                {
+                    minutes_left -= 4;
+                    clock.find(".period").text(period);
+                    clock.find(".time-left").text(minutes_left);
+                    clock.find(".time-sec-or-min").text("min.");
+                    clock.find(".time-left-text").text("left");
+                }
+
+                else if (seconds_left >= 4 * 60)
+                {
+                    seconds_left -= 4 * 60;
+                    clock.find(".period").text(period);
+                    clock.find(".time-left").text(seconds_left);
+                    clock.find(".time-sec-or-min").text("sec.");
+                    clock.find(".time-left-text").text("left");
+                }
+
+                else if (seconds_left >= 60)
+                {
+                    if (period == 10)
+                    {
+                        clock.find(".period").text("none")
+                        clock.find(".time-left").text("School's out");
+                        clock.find(".time-sec-or-min").text("");
+                        clock.find(".time-left-text").text("");
+                    }
+
+                    else
+                    {
+                        clock.find(".period").html(parseInt(period) + 1);
+                        clock.find(".time-left").text(minutes_left);
+                        clock.find(".time-sec-or-min").text("min.");
+                        clock.find(".time-left-text").text("until start");
+                    }
+                }
+
+                else
+                {
+                    if (period == 10)
+                    {
+                        clock.find(".period").text("none")
+                        clock.find(".time-left").text("School's out");
+                        clock.find(".time-sec-or-min").text("");
+                        clock.find(".time-left-text").text("");
+                    }
+
+                    else
+                    {
+                        clock.find(".period").html(parseInt(period) + 1);
+                        clock.find(".time-left").text(seconds_left);
+                        clock.find(".time-sec-or-min").text("sec.");
+                        clock.find(".time-left-text").text("until start");
+                    }
+                }
+            } 
+        }
+    }
 }
 
 function get_human_weekday(weekday_number)
 {
     human_weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     return human_weekdays[weekday_number];
+}
+
+function get_human_month(month_number)
+{
+    human_months = [ "January", "February", "March", "April", "May", "June",
+               "July", "August", "September", "October", "November", "December" ];
+
+    return human_months[month_number];
 }
 
 function get_period_times(bell_schedule)
@@ -134,108 +328,54 @@ function get_period_times(bell_schedule)
     return period_times
 }
 
-
-function generate_schedule_clock(bell_schedule)
+function inject_schedule_html(schedule_html)
 {
-    var period_times = get_period_times(bell_schedule);
-    console.log(period_times);
-
-    setInterval(
-        function()
-        {
-            updateClock(period_times)
-        }, 
-        1 * 1000
-    );
-
-    return ' \
-    <span class="clock"> \
-        Period <span class="period"> </span> \
-        (<span class="time-left"> </span> \
-         <span class="time-sec-or-min"></span> \
-         <span class="time-left-text"></span>) \
-    </span> \
-    '
+    $(".schedule").html(schedule_html);
 }
 
-function updateClock(period_times)
-{
-    var clock = $(".clock");
-    var now = new Date();
-    now = new Date(now - 3 * 60 * 1000);
+/* 
+ * DOMParser HTML extension 
+ * 2012-02-02 
+ * 
+ * By Eli Grey, http://eligrey.com 
+ * Public domain. 
+ * NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK. 
+ */  
 
-    for (var period in period_times)
-    {
-        if (period_times.hasOwnProperty(period))
-        {
-            period_time = period_times[period];
-            start = period_time[0];
-            end = period_time[1]
+/*! @source https://gist.github.com/1129031 */  
+/*global document, DOMParser*/  
 
-            if (now > start && now < end)
-            {
-                seconds_left = Math.round((end - now) / 1000); // in seconds
-                minutes_left = Math.round(seconds_left / 60); //in minutes
+(function(DOMParser) {  
+    "use strict";  
+    var DOMParser_proto = DOMParser.prototype  
+      , real_parseFromString = DOMParser_proto.parseFromString;
 
-                console.log(seconds_left);
-                console.log(minutes_left);
+    // Firefox/Opera/IE throw errors on unsupported types  
+    try {  
+        // WebKit returns null on unsupported types  
+        if ((new DOMParser).parseFromString("", "text/html")) {  
+            // text/html parsing is natively supported  
+            return;  
+        }  
+    } catch (ex) {}  
 
-                if (seconds_left >= 5 * 60)
-                {
-                    minutes_left -= 4;
-                    clock.find(".period").text(period);
-                    clock.find(".time-left").text(minutes_left);
-                    clock.find(".time-sec-or-min").text("min.");
-                    clock.find(".time-left-text").text("left");
-                }
+    DOMParser_proto.parseFromString = function(markup, type) {  
+        if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {  
+            var doc = document.implementation.createHTMLDocument("")
+              , doc_elt = doc.documentElement
+              , first_elt;
 
-                else if (seconds_left >= 4 * 60)
-                {
-                    seconds_left -= 4 * 60;
-                    clock.find(".period").text(period);
-                    clock.find(".time-left").text(seconds_left);
-                    clock.find(".time-sec-or-min").text("sec.");
-                    clock.find(".time-left-text").text("left");
-                }
+            doc_elt.innerHTML = markup;
+            first_elt = doc_elt.firstElementChild;
 
-                else if (seconds_left >= 60)
-                {
-                    if (period == 10)
-                    {
-                        clock.find(".period").text("none")
-                        clock.find(".time-left").text("School's out");
-                        clock.find(".time-sec-or-min").text("");
-                        clock.find(".time-left-text").text("");
-                    }
+            if (doc_elt.childElementCount === 1
+                && first_elt.localName.toLowerCase() === "html") {  
+                doc.replaceChild(first_elt, doc_elt);  
+            }  
 
-                    else
-                    {
-                        clock.find(".period").html(parseInt(period) + 1);
-                        clock.find(".time-left").text(minutes_left);
-                        clock.find(".time-sec-or-min").text("min.");
-                        clock.find(".time-left-text").text("until start");
-                    }
-                }
-
-                else
-                {
-                    if (period == 10)
-                    {
-                        clock.find(".period").text("none")
-                        clock.find(".time-left").text("School's out");
-                        clock.find(".time-sec-or-min").text("");
-                        clock.find(".time-left-text").text("");
-                    }
-
-                    else
-                    {
-                        clock.find(".period").html(parseInt(period) + 1);
-                        clock.find(".time-left").text(seconds_left);
-                        clock.find(".time-sec-or-min").text("sec.");
-                        clock.find(".time-left-text").text("until start");
-                    }
-                }
-            } 
-        }
-    }
-}
+            return doc;  
+        } else {  
+            return real_parseFromString.apply(this, arguments);  
+        }  
+    };  
+}(DOMParser));

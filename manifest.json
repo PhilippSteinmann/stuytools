@@ -19,6 +19,7 @@
 
     "permissions": [
         "cookies",
-        "https://students-stuyhs.theschoolsystem.net/"
+        "https://students-stuyhs.theschoolsystem.net/",
+        "http://stuy.enschool.org/"
     ]
 }

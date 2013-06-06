@@ -358,7 +358,7 @@ header input[type=submit]
 /* SCHOOL INFO AREA */
 /* ========================== */
 
-.schedule
+.day
 {
     float: left;
     width: 50%;
@@ -375,18 +375,18 @@ header input[type=submit]
     margin-bottom: 36px;
 }
 
-.schedule span
+.day span
 { 
     display: block;
     margin-bottom: 10px;
 }
 
-.schedule .clock span
+.day .clock span
 {
     display: inline;
 }
 
-.schedule h3
+.day h3
 {
     margin-bottom: 0;
     display: inline;
