@@ -19,8 +19,7 @@ function insert_page(student_data)
     {
         insert_content(student_data, previous_content);
         insert_personal_area(student_data, true);
-    }
-    attach_listeners();
+    } attach_listeners();
 }
 
 function insert_header(student_data)
@@ -76,9 +75,9 @@ function insert_school_area(student_data)
 {
     var schedules = fetch_stuy_schedule();
     schedules = {
-        "2013-5-26": 
+        "2013-6-6": 
         {
-            bell_schedule: "Regular",
+            bell_schedule: "Homeroom",
             block: "B2"
         }
     }
@@ -90,14 +89,6 @@ function insert_school_area(student_data)
             <div class="padding-box"> \
                 <h2>School Info </h2> \
                 ' + schedule_html +  ' \
-                <div class="today schedule"> \
-                    <span class="date"> \
-                        <h3>Friday </h3> \
-                        <small>(today) </small> \
-                    </span> \
-                    <span class="type">Regular | B2 </span> \
-                    <span class="period">Period 7 (13 min. left) </span> \
-                </div> \
                 <div class="tomorrow schedule"> \
                     <span class="date"> \
                         <strong>Monday</strong> \

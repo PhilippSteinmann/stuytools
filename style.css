@@ -376,8 +376,14 @@ header input[type=submit]
 }
 
 .schedule span
-{ display: block;
+{ 
+    display: block;
     margin-bottom: 10px;
+}
+
+.schedule .clock span
+{
+    display: inline;
 }
 
 .schedule h3
