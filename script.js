@@ -7,9 +7,12 @@ function make_awesome()
 
 function insert_fonts()
 {
-    var link_node = document.createElement("link"); link_node.rel = "stylesheet";
+    var link_node = document.createElement("link"); 
+    link_node.rel = "stylesheet";
     link_node.href = 'https://fonts.googleapis.com/css?family=Open+Sans:400,800,700';
-    document.head.appendChild(link_node); }
+    console.log(link_node);
+    document.head.appendChild(link_node); 
+}
 
 function get_student_data()
 {
