@@ -162,6 +162,7 @@ function updateClock(period_times)
 {
     var clock = $(".clock");
     var now = new Date();
+    now = new Date(now - 3 * 60 * 1000);
 
     for (var period in period_times)
     {
@@ -176,7 +177,10 @@ function updateClock(period_times)
                 seconds_left = Math.round((end - now) / 1000); // in seconds
                 minutes_left = Math.round(seconds_left / 60); //in minutes
 
-                if (minutes_left >= 5)
+                console.log(seconds_left);
+                console.log(minutes_left);
+
+                if (seconds_left >= 5 * 60)
                 {
                     minutes_left -= 4;
                     clock.find(".period").text(period);
@@ -185,7 +189,7 @@ function updateClock(period_times)
                     clock.find(".time-left-text").text("left");
                 }
 
-                else if (minutes_left >= 4)
+                else if (seconds_left >= 4 * 60)
                 {
                     seconds_left -= 4 * 60;
                     clock.find(".period").text(period);
@@ -194,7 +198,7 @@ function updateClock(period_times)
                     clock.find(".time-left-text").text("left");
                 }
 
-                else if (minutes_left >= 1)
+                else if (seconds_left >= 60)
                 {
                     if (period == 10)
                     {
@@ -203,6 +207,7 @@ function updateClock(period_times)
                         clock.find(".time-sec-or-min").text("");
                         clock.find(".time-left-text").text("");
                     }
+
                     else
                     {
                         clock.find(".period").html(parseInt(period) + 1);
