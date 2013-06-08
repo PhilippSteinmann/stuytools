@@ -13,4 +13,4 @@ A Google Chrome extension that provides a new and modern interface to Stuyvesant
 ####Security Concerns
 StuyTools uses JavaScript to parse, restyle, and rearrange the page. The program uses this information and then discards it, and does not have the ability to share it with other websites (see the permissions). 
 
-Since it is open-source, you're welcome to read the code and verify the program's integrity.
+Since it is open-source, you're welcome to read the code and verify the program's integrity. If you have any concerns or questions, you can email me at the address in my profile.
