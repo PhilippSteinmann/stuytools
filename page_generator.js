@@ -74,36 +74,21 @@ function insert_header(student_data)
 
 function insert_school_area(student_data)
 {
-    create_stuy_schedule();
-    create_announcements_section();
+    window.setTimeout(create_stuy_schedule, 500);
+    window.setTimeout(create_announcements_section, 500);
+    //to make it load faster at first
 
-    $(".content").append('\
-          <div class="school-info-area"> \
+     $(".content").append('\
+        <div class="school-info-area"> \
             <div class="padding-box"> \
                 <h2>School Info </h2> \
+                <p class="loading-notice schedule-loading-notice">Loading... </p> \
                 <div class="schedule"> \
                 </div> \
                 <div class="announcements"> \
                     <h3>Announcements </h3> \
+                    <p class="loading-notice announcements-loading-notice">Loading... </p> \
                     <ul> \
-                        <li> \
-                            <a href="">' + title_case("FRESHMAN CAPTURES PSAL BOYS INDIVIDUAL GOLF CROWN") + ' \
-                        </li> \
-                        <li> \
-                            <a href="">' + title_case("ONLINE PROGRAMMING FOR FALL 2013 PHASE 2") + ' \
-                        </li> \
-                        <li> \
-                            <a href="">' + title_case("***UPDATED*** LIBRARY SCHEDULE FOR APRIL 29-JUNE 10") + ' \
-                        </li> \
-                        <li> \
-                            <a href="">' + title_case("REMINDER: TEACHER COMMENT SHEET & EXTRACURRICULAR ACTIVITIES SHEET") + ' \
-                        </li> \
-                        <li> \
-                            <a href="">' + title_case("APPLICATIONS FOR WORKING PAPERS") + ' \
-                        </li> \
-                        <li> \
-                            <a href="">' + title_case("AP EXAM SCHEDULE UPDATE") + ' \
-                        </li> \
                     </ul> \
                 </div> \
             </div> \

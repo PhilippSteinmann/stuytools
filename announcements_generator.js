@@ -25,10 +25,11 @@ function parse_announcements(raw_html)
     for (var i=0; i < news_rows.length; i++)
     {
         var row = news_rows[i];
-        var title = $(row).find("a").text();
+        var title = $(row).find("a")[0].text;
 
         var raw_desc = $(row).find("#r").html();
         var description = /<br>([^]+)</.exec(raw_desc)[1].trim();
+        description = remove_relative_links(description);
 
         announcements.push(
             {
@@ -62,8 +63,15 @@ function generate_announcements_html(announcements, num_visible)
     return html;
 }
 
+function remove_relative_links(text)
+{
+    var fixed_text = text;
+    return fixed_text.replace(/href=["']\.\.([^"']+)["']/, 'href="http://stuy.enschool.org$1"');
+}
+
 function inject_announcements_html(announcements_html)
 {
+    $(".announcements-loading-notice").remove();
     $(".announcements ul").html(announcements_html);
 }
 
