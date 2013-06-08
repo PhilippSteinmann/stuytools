@@ -51,8 +51,12 @@ function generate_announcements_html(announcements, num_visible)
             var title = announcement["title"];
             var description = announcement["description"];
 
+            var visible = true;
+            if (index + 1 > num_visible)
+                visible = false;
+
             html += '\
-                <li> \
+                <li ' + (visible ? "" : "class='hidden'") + '> \
                     <a href="#' + index + '" class="announcement-title" data-announcement="' + index + '">' + title + '</a> \
                     <div class="announcement-desc" id="announcement-' + index + '">' + description + '</div> \
                 </li> \
@@ -60,6 +64,10 @@ function generate_announcements_html(announcements, num_visible)
         }
     );
 
+    if (num_visible >= announcements.length)
+    {
+        $(".load-more-announcements").remove();
+    }
     return html;
 }
 
@@ -82,6 +90,20 @@ function attach_announcements_listeners()
         {
             var id = $(this).data("announcement");
             $("#announcement-" + id).slideToggle(500);
+        }
+    );
+
+    $(".load-more-announcements").click(
+        function()
+        {
+            var button = $(this);
+            $(".announcements .hidden").slideDown(500,
+                function()
+                {
+                    button.text("Even More");
+                    button.attr("href", "http://stuy.enschool.org/apps/news/index.jsp?id=0");
+                }
+            );
         }
     );
 }

@@ -28,7 +28,7 @@ html, body
 
 ::selection
 {
-    background: rgba(0, 130, 0, 0.999);
+    background: rgba(15, 140, 195, 0.999);
     color: white;
 }
 
@@ -415,6 +415,11 @@ header input[type=submit]
 .announcements li
 {
     margin-bottom: 14px;
+}
+
+.hidden
+{
+    display: none;
 }
 
 .announcement-desc

@@ -90,6 +90,7 @@ function insert_school_area(student_data)
                     <p class="loading-notice announcements-loading-notice">Loading... </p> \
                     <ul> \
                     </ul> \
+                    <a class="secondary-button load-more-announcements">Load More </a> \
                 </div> \
             </div> \
         </div> \
