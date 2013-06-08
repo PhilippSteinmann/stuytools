@@ -75,6 +75,7 @@ function insert_header(student_data)
 function insert_school_area(student_data)
 {
     create_stuy_schedule();
+    create_announcements_section();
 
     $(".content").append('\
           <div class="school-info-area"> \
@@ -173,9 +174,6 @@ function insert_personal_area(student_data, popup)
             </div> \
         </aside> \
         ');
-    }
-    else
-    {
     }
 }
 

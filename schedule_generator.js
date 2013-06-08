@@ -4,8 +4,8 @@ function create_stuy_schedule()
     $.get(url, 
         function(raw_html)
         {
-            schedule = parse_stuy_schedule(raw_html);
-            schedule_html = generate_schedule_html(schedule);
+            var schedule = parse_stuy_schedule(raw_html);
+            var schedule_html = generate_schedule_html(schedule);
             inject_schedule_html(schedule_html);
         }
     );
@@ -92,7 +92,6 @@ function generate_schedule_html(schedule)
                 if (today.getHours() < 16)
                     html += generate_clock(bell_schedule);
 
-                html += generate_clock(bell_schedule); //only for testing, remove later
                 html += "</div>";
             }
             else if (date_str == tomorrow_str)
@@ -108,21 +107,6 @@ function generate_schedule_html(schedule)
                         ';
             }
         }
-    }
-    if (today_str in schedule)
-    {
-        var today_schedule = schedule[today_str];
-        var bell_schedule = today_schedule["bell_schedule"];
-        var block = today_schedule["block"];
-
-        var human_weekday = get_human_weekday(weekday);
-
-            
-    }
-
-    else
-    { 
-        
     }
     return html;
 }
@@ -154,7 +138,6 @@ function updateClock(period_times)
 {
     var clock = $(".clock");
     var now = new Date();
-    now = new Date(now.getTime() - 200 * 60 * 1000);
 
     for (var period in period_times)
     {
@@ -169,60 +152,44 @@ function updateClock(period_times)
                 seconds_left = Math.round((end - now) / 1000); // in seconds
                 minutes_left = Math.round(seconds_left / 60); //in minutes
 
-                if (seconds_left >= 5 * 60)
+                seconds_in = Math.round((now - start) / 1000); // in seconds
+                minutes_in = Math.round(seconds_in / 60); //in minutes
+
+                if (seconds_in <= 180)
                 {
-                    minutes_left -= 4;
+                    var seconds_until_start = 4 * 60 - seconds_in;
+                    var minutes_until_start = Math.round(seconds_until_start / 60);
+
+                    clock.find(".period").html(period);
+                    clock.find(".time-left").text(minutes_until_start);
+                    clock.find(".time-sec-or-min").text("min.");
+                    clock.find(".time-left-text").text("until start");
+                }
+
+                else if (seconds_in <= 240)
+                {
+                    var seconds_until_start = 4 * 60 - seconds_in;
+
+                    clock.find(".period").html(period);
+                    clock.find(".time-left").text(seconds_until_start);
+                    clock.find(".time-sec-or-min").text("sec.");
+                    clock.find(".time-left-text").text("until start");
+                }
+
+                else if (seconds_left >= 60)
+                {
                     clock.find(".period").text(period);
                     clock.find(".time-left").text(minutes_left);
                     clock.find(".time-sec-or-min").text("min.");
                     clock.find(".time-left-text").text("left");
                 }
 
-                else if (seconds_left >= 4 * 60)
+                else
                 {
-                    seconds_left -= 4 * 60;
                     clock.find(".period").text(period);
                     clock.find(".time-left").text(seconds_left);
                     clock.find(".time-sec-or-min").text("sec.");
                     clock.find(".time-left-text").text("left");
-                }
-
-                else if (seconds_left >= 60)
-                {
-                    if (period == 10)
-                    {
-                        clock.find(".period").text("none")
-                        clock.find(".time-left").text("School's out");
-                        clock.find(".time-sec-or-min").text("");
-                        clock.find(".time-left-text").text("");
-                    }
-
-                    else
-                    {
-                        clock.find(".period").html(parseInt(period) + 1);
-                        clock.find(".time-left").text(minutes_left);
-                        clock.find(".time-sec-or-min").text("min.");
-                        clock.find(".time-left-text").text("until start");
-                    }
-                }
-
-                else
-                {
-                    if (period == 10)
-                    {
-                        clock.find(".period").text("none")
-                        clock.find(".time-left").text("School's out");
-                        clock.find(".time-sec-or-min").text("");
-                        clock.find(".time-left-text").text("");
-                    }
-
-                    else
-                    {
-                        clock.find(".period").html(parseInt(period) + 1);
-                        clock.find(".time-left").text(seconds_left);
-                        clock.find(".time-sec-or-min").text("sec.");
-                        clock.find(".time-left-text").text("until start");
-                    }
                 }
             } 
         }

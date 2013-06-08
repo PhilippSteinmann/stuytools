@@ -403,7 +403,7 @@ header input[type=submit]
 
 .announcements
 {
-    clear: left; /* Float from schedules */
+    clear: left; /* Float from schedule */
 }   
 
 .announcements ul
@@ -415,6 +415,16 @@ header input[type=submit]
 .announcements li
 {
     margin-bottom: 14px;
+}
+
+.announcement-desc
+{
+    display: none;
+    margin-top: 8px;
+    margin-bottom: 30px;
+
+    line-height: 1.5;
+    background-color: rgb(255, 245, 200);
 }
 
 /* ========================== */
