@@ -34,7 +34,7 @@ function parse_stuy_schedule(raw_html)
             var date = day.getDate();
 
             var human_month = get_human_month(month).toUpperCase();
-            var regex = new RegExp(human_month + " " + date + "\\s(.+) Bell Schedule.*(\\D\\d)");
+            var regex = new RegExp(human_month + " " + date + "\\s(.+) Bell Schedule\\s*.(.{1,2}).\\sfor");
             var results = scan_page(regex, text);
             if (results)
             {
