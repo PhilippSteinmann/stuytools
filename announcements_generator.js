@@ -89,7 +89,7 @@ function attach_announcements_listeners()
         function()
         {
             var id = $(this).data("announcement");
-            $("#announcement-" + id).slideToggle(500);
+            $("#announcement-" + id).stop(true, false).slideToggle(500);
         }
     );
 
