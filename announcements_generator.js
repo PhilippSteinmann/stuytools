@@ -25,7 +25,10 @@ function parse_announcements(raw_html)
     for (var i=0; i < news_rows.length; i++)
     {
         var row = news_rows[i];
-        var title = $(row).find("a")[0].text;
+        
+        var link = $(row).find("a")[0];
+        var title = link.text;
+        var url = $(link).attr("href");
 
         var raw_desc = $(row).find("#r").html();
         var description = /<br>([^]+)</.exec(raw_desc)[1].trim();
@@ -34,7 +37,8 @@ function parse_announcements(raw_html)
         announcements.push(
             {
                 title: title_case(title),
-                description: description
+                description: description,
+                url: "http://stuy.enschool.org" + url
             }
         );
     }
@@ -48,8 +52,9 @@ function generate_announcements_html(announcements, num_visible)
     announcements.forEach(
         function(announcement, index)
         {
-            var title = announcement["title"];
-            var description = announcement["description"];
+            var title = announcement.title;
+            var description = announcement.description;
+            var url = announcement.url;
 
             var visible = true;
             if (index + 1 > num_visible)
@@ -58,16 +63,19 @@ function generate_announcements_html(announcements, num_visible)
             html += '\
                 <li ' + (visible ? "" : "class='hidden'") + '> \
                     <a href="#' + index + '" class="announcement-title" data-announcement="' + index + '">' + title + '</a> \
-                    <div class="announcement-desc" id="announcement-' + index + '">' + description + '</div> \
+                    <div class="announcement-desc" id="announcement-' + index + '">' + description + '\
+                        <a href="' + url + '" class="read-story">Read story </a> \
+                    </div> \
                 </li> \
             ';
         }
     );
 
     if (num_visible >= announcements.length)
-    {
         $(".load-more-announcements").remove();
-    }
+    else
+        $(".load-more-announcements").show();
+
     return html;
 }
 

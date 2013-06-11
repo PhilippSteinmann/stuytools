@@ -427,9 +427,24 @@ header input[type=submit]
     display: none;
     margin-top: 8px;
     margin-bottom: 30px;
+    padding: 4px;
 
     line-height: 1.5;
     background-color: rgb(255, 250, 180);
+    border-radius: 3px;
+}
+
+.announcement-desc .read-story
+{
+    display: block;
+
+    color: inherit;
+    font-style: italic;
+}
+
+.load-more-announcements
+{
+    display: none;
 }
 
 /* ========================== */

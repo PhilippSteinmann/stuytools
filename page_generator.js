@@ -82,12 +82,12 @@ function insert_school_area(student_data)
         <div class="school-info-area"> \
             <div class="padding-box"> \
                 <h2>School Info </h2> \
-                <p class="loading-notice schedule-loading-notice">Loading... </p> \
+                <p class="loading-notice schedule-loading-notice">Loading Schedule... </p> \
                 <div class="schedule"> \
                 </div> \
                 <div class="announcements"> \
                     <h3>Announcements </h3> \
-                    <p class="loading-notice announcements-loading-notice">Loading... </p> \
+                    <p class="loading-notice announcements-loading-notice">Loading Announcements... </p> \
                     <ul> \
                     </ul> \
                     <a class="secondary-button load-more-announcements">Load More </a> \
