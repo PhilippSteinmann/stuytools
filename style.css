@@ -212,7 +212,7 @@ aside
     left: 66%;
 }
 
-.page-area
+.page-area, .page-area-iframe
 {
     position: absolute;
     width: 66%;
@@ -226,7 +226,6 @@ header, .school-info-area, aside
 {
     width: 33%;
     height: 100%;
-    padding-top: 0.7%;
 }
 
 header
@@ -243,7 +242,7 @@ header
 .padding-box
 {
     position: relative;
-    padding: 0 2%;
+    padding: 0.7% 2%;
 }
 
 
@@ -439,6 +438,11 @@ header input[type=submit]
     margin-bottom: 14px;
 }
 
+.announcements li a
+{
+    display: block;
+}
+
 .hidden
 {
     display: none;
@@ -506,6 +510,7 @@ aside table
     margin-bottom: 20px;
     border-collapse: collapse;
     width: 100%;
+    table-layout: fixed;
 }
 
 aside tr
@@ -520,6 +525,7 @@ aside tr:first-of-type
 
 aside td
 {
+    width: 50%;
     padding: 10px 20px;
 }
 

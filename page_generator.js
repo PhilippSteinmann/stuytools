@@ -16,7 +16,7 @@ function insert_page(student_data)
         var hash = window.location.hash.slice(1);
         insert_school_area(student_data, true);
         insert_personal_area(student_data, true);
-        insert_page_area(window.location.hash);
+        insert_page_area(hash);
 
         history.pushState("", document.title, hash);
     }
@@ -54,12 +54,12 @@ function insert_header(student_data)
             <h1>' + student_data["name"]["first"] + " " + student_data["name"]["last"] + '</h1> \
             <nav> \
                 <ul> \
-                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb" target="test">Report Card</a> </li> \
-                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
-                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/schedule_check.rb">Schedule </a> </li> \
-                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/attendance.rb">Attendance </a> </li> \
-                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/transcripts.rb">Transcript </a> </li> \
-                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/teacher_rec_check.rb">Teacher Recommendations </a> </li> \
+                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb" target="test">Report Card</a> </li> \
+                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
+                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/schedule_check.rb">Schedule </a> </li> \
+                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/attendance.rb">Attendance </a> </li> \
+                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/transcripts.rb">Transcript </a> </li> \
+                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/teacher_rec_check.rb">Teacher Recommendations </a> </li> \
                 </ul> \
             </nav> \
         ');
@@ -164,7 +164,10 @@ function insert_personal_area(student_data, hidden)
 function insert_page_area(page_url)
 {
     $(".content").append(' \
-        <iframe class="page-area ' + (page_url ? 'visible" src="' + page_url + '"' : '"') + ' id="page-area" frameBorder="0"> </iframe> \
+        <div class="page-area"> \
+            <div class="padding-box"> </div> \
+         </div> \
+        <iframe class="page-area-iframe ' + (page_url ? 'visible" src="' + page_url + '"' : '"') + ' id="page-area-iframe" frameBorder="0"> </iframe> \
     ');
 }
 
@@ -185,14 +188,19 @@ function attach_listeners()
         }
     );
 
-    $("nav a").click(
+    $("a[target=page-area-iframe]").click(
         function()
-        { $(".school-info-area").hide();
+        { 
+            $(".school-info-area").hide();
             $("aside").hide();
-            $(".page-area").show();
 
             var url = this.href;
-            history.pushState({}, "", url);
+
+            $(".page-area-iframe")[0].onload = 
+                function()
+                {
+                    restyle_page(url);
+                }
         }
     );
 
@@ -205,6 +213,15 @@ function attach_listeners()
             history.pushState({}, "Student Tools", "/student_jobs.rb");
             return false;
         } );
+
+    $(".page-area-iframe").load(
+        function()
+        {
+            var url = this.contentWindow.location.href;
+            history.pushState({}, "", url);
+            restyle_page();
+        }
+    );
 
     attach_email_listeners();
 }
