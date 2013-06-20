@@ -520,12 +520,15 @@ aside ul .secondary-button
     width: 200px;
 }
 
+aside .change-email
+{
+    margin-top: 8px;
+}
+
 span.block + span.block
 {
     margin-top: 6px;
-    margin-bottom: 10px;
 }
-
 
 @media all and (max-width: 1080)
 {

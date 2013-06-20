@@ -112,18 +112,6 @@ String.prototype.in = function(arr)
 // from http://stackoverflow.com/a/12533554/805556, lightly modified 
 function title_case(e){var t=/^(a|an|and|as|at|but|by|en|for|if|in|of|on|psal|or|the|to|vs?\.?|via)$/i;return e.mindfulLowerCase().replace(/([^\W_]+[^\s-]*) */g,function(e,n,r,i){return r>0&&r+n.length!==i.length&&n.search(t)>-1&&i.charAt(r-2)!==":"&&i.charAt(r-1).search(/[^\s-]/)<0?e:n.substr(1).search(/[A-Z]|\../)>-1?e:e.charAt(0).toUpperCase()+e.substr(1)})};
 
-if (window == window.top)
-{
-    if (window.location.pathname != "/student_jobs.rb")
-        window.location.href = "/student_jobs.rb#" + window.location.pathname;
-
-    else
-        get_student_data();
-}
-
-else
-    console.log("hello");
-
 /* 
  * DOMParser HTML extension 
  * 2012-02-02 
@@ -171,22 +159,22 @@ else
     };  
 }(DOMParser));
 
-function restyle_email_form()
+var do_not_load = ["/login.rb", "/logoff.rb", "/email.rb"];
+
+if (window == window.top)
 {
-    var iframe = $(".change-email-iframe")[0];
-    iframe.onload = 
-        function()
-        {
-            var iframe = $(".change-email-iframe")[0];
-            var body = iframe.contentDocument.querySelector("body");
-            var emails = $(body).find("input[name=email]").val();
-            
-            $("td.email-field").html(' \
-            <form action="email.rb" method="POST"> \
-                <input type="text" name="email" value=' + emails + '> \
-                <input type="hidden" name="email2"> \
-                <input type="submit" class="primary-button" name="button" value="Submit"> \
-            </form> \
-            ');
-        };
+    if (window.location.pathname != "/student_jobs.rb")
+    {
+        if (window.location.pathname.in(do_not_load))
+            window.location.href = "/student_jobs.rb";
+        else
+            window.location.href = "/student_jobs.rb#" + window.location.pathname;
+    }
+
+    else
+        get_student_data();
 }
+
+else
+    console.log("hello");
+

@@ -144,7 +144,7 @@ function insert_personal_area(student_data, hidden)
                          </tr> \
                         <tr> \
                             <td>Email Addresses </td> \
-                            <td class="email-field"> \
+                            <td class="email-col"> \
                             ' + email_html + ' \
                                 <a class="secondary-button change-email" href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> \
                             </td> \
@@ -187,8 +187,7 @@ function attach_listeners()
 
     $("nav a").click(
         function()
-        {
-            $(".school-info-area").hide();
+        { $(".school-info-area").hide();
             $("aside").hide();
             $(".page-area").show();
 
@@ -205,17 +204,67 @@ function attach_listeners()
             $(".page-area").hide();
             history.pushState({}, "Student Tools", "/student_jobs.rb");
             return false;
-        }
-    );
+        } );
 
+    attach_email_listeners();
+}
+
+function attach_email_listeners()
+{
     $(".change-email").click(
         function(e)
         {
             e.preventDefault();
 
-            history.pushState({}, "Change email address - Student Tools", this.href);
-            this.parentElement.innerHTML = '<iframe class="change-email-iframe" src="https://students-stuyhs.theschoolsystem.net/email.rb"> </iframe>';
-            restyle_email_form();
+            var emails = [];
+            var email_fields = $("td.email-col").find(".block");
+            
+            for (var i=0; i < email_fields.length; i++)
+            {
+                email = email_fields[i].innerText;
+                emails.push(email);
+            }
+
+            $("td.email-col").html(' \
+            <form action="email.rb" class="email-form" method="POST"> \
+                <input type="text" name="email" value=' + emails.join(",") + '> \
+                <input type="hidden" name="email2"> \
+                <input type="hidden" name="button" value="submit"> \
+                <input type="submit" class="primary-button" value="Submit"> \
+            </form> \
+            ');
+
+            $(".email-form").submit(
+                function(e)
+                {
+                    var user_input = $(this).find("input[name=email]").val();
+                    $(this).find("input[name=email2]").val(user_input);
+                    $("td.email-col").html("Submitting...");
+
+                    $.post(this.action, $(this).serialize(),
+                        function(response)
+                        {
+                            if ("Email address updated.".in(response))
+                            {
+                                $("td.email-col").html("");
+
+                                user_input.split(",").forEach(
+                                    function(email)
+                                    {
+                                        $("td.email-col"). append("<span class='block'>" + email + "</span>");
+                                    }
+                                );
+                                $("td.email-col").append(' \
+                                    <a class="secondary-button change-email" href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> \
+                                ');
+
+                                attach_email_listeners(); //New elements were created, so need to reattach
+                            }
+                        } );
+
+                    return false;
+                }
+            );
         }
-    );
+    ); 
 }
