@@ -1,19 +1,3 @@
-//was working on generating HTML, create dictionary for week days to add to html
-function make_awesome() 
-{
-    insert_fonts();
-    get_student_data();
-}
-
-function insert_fonts()
-{
-    var link_node = document.createElement("link"); 
-    link_node.rel = "stylesheet";
-    link_node.href = 'https://fonts.googleapis.com/css?family=Open+Sans:400,800,700';
-    console.log(link_node);
-    document.head.appendChild(link_node); 
-}
-
 function get_student_data()
 {
     var runtime_or_extension = chrome.runtime && chrome.runtime.sendMessage ?
@@ -128,14 +112,17 @@ String.prototype.in = function(arr)
 // from http://stackoverflow.com/a/12533554/805556, lightly modified 
 function title_case(e){var t=/^(a|an|and|as|at|but|by|en|for|if|in|of|on|psal|or|the|to|vs?\.?|via)$/i;return e.mindfulLowerCase().replace(/([^\W_]+[^\s-]*) */g,function(e,n,r,i){return r>0&&r+n.length!==i.length&&n.search(t)>-1&&i.charAt(r-2)!==":"&&i.charAt(r-1).search(/[^\s-]/)<0?e:n.substr(1).search(/[A-Z]|\../)>-1?e:e.charAt(0).toUpperCase()+e.substr(1)})};
 
-var redirect_paths = ["/login.rb", "/logoff.rb"];
+if (window == window.top)
+{
+    if (window.location.pathname != "/student_jobs.rb")
+        window.location.href = "/student_jobs.rb#" + window.location.pathname;
 
-if (window.location.pathname.in(redirect_paths))
-{   
-    window.location.pathname = "student_jobs.rb";
+    else
+        get_student_data();
 }
+
 else
-    get_student_data();
+    console.log("hello");
 
 /* 
  * DOMParser HTML extension 
@@ -183,3 +170,23 @@ else
         }  
     };  
 }(DOMParser));
+
+function restyle_email_form()
+{
+    var iframe = $(".change-email-iframe")[0];
+    iframe.onload = 
+        function()
+        {
+            var iframe = $(".change-email-iframe")[0];
+            var body = iframe.contentDocument.querySelector("body");
+            var emails = $(body).find("input[name=email]").val();
+            
+            $("td.email-field").html(' \
+            <form action="email.rb" method="POST"> \
+                <input type="text" name="email" value=' + emails + '> \
+                <input type="hidden" name="email2"> \
+                <input type="submit" class="primary-button" name="button" value="Submit"> \
+            </form> \
+            ');
+        };
+}

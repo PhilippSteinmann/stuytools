@@ -64,7 +64,7 @@ function generate_announcements_html(announcements, num_visible)
                 <li ' + (visible ? "" : "class='hidden'") + '> \
                     <a href="#' + index + '" class="announcement-title" data-announcement="' + index + '">' + title + '</a> \
                     <div class="announcement-desc" id="announcement-' + index + '">' + description + '\
-                        <a href="' + url + '" class="read-story">Read story </a> \
+                        <a href="' + url + '" target="_blank" class="read-story">Read story </a> \
                     </div> \
                 </li> \
             ';

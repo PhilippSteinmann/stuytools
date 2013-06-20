@@ -1,25 +1,35 @@
 function insert_page(student_data)
 {
-    document.title = "StuyTools";
+    document.title = "Student Tools";
 
-    previous_content = $("body").html();
-    
+    var previous_content = $("body").html();
+
     $("body").html(' \
         <div class="content"> \
         </div> \
     ');
 
-    insert_header(student_data); 
-    if (window.location.pathname == "/student_jobs.rb")
+    insert_header(student_data);
+
+    if (window.location.hash)
     {
-        insert_school_area(student_data);
-        insert_personal_area(student_data, false);
+        var hash = window.location.hash.slice(1);
+        insert_school_area(student_data, true);
+        insert_personal_area(student_data, true);
+        insert_page_area(window.location.hash);
+
+        history.pushState("", document.title, hash);
     }
+
     else
     {
-        insert_content(student_data, previous_content);
-        insert_personal_area(student_data, true);
-    } 
+        insert_school_area(student_data);
+        insert_personal_area(student_data);
+        insert_page_area();
+    }
+
+
+    insert_fonts();
     attach_listeners();
 }
 
@@ -42,14 +52,16 @@ function insert_header(student_data)
             <a class="secondary-button logout" href="https://students-stuyhs.theschoolsystem.net/logoff.rb">Log Out </a> \
             <button class="secondary-button your-info" href="#">Your Info </button> \
             <h1>' + student_data["name"]["first"] + " " + student_data["name"]["last"] + '</h1> \
-            <ul> \
-                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb">Report Card</a> </li> \
-                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
-                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/schedule_check.rb">Schedule </a> </li> \
-                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/attendance.rb">Attendance </a> </li> \
-                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/transcripts.rb">Transcript </a> </li> \
-                <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/teacher_rec_check.rb">Teacher Recommendations </a> </li> \
-            </ul> \
+            <nav> \
+                <ul> \
+                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb" target="test">Report Card</a> </li> \
+                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
+                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/schedule_check.rb">Schedule </a> </li> \
+                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/attendance.rb">Attendance </a> </li> \
+                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/transcripts.rb">Transcript </a> </li> \
+                    <li><a class="primary-button" target="page-area" href="https://students-stuyhs.theschoolsystem.net/teacher_rec_check.rb">Teacher Recommendations </a> </li> \
+                </ul> \
+            </nav> \
         ');
     }
     else
@@ -63,7 +75,7 @@ function insert_header(student_data)
                     <input type="password" id="password"  name="password" required> \
                     \
                     <a href="https://students-stuyhs.theschoolsystem.net/reset_password.rb">Forgot your password? </a> \
-                    <!-- the S.O.B. below caused a day of frustration and fruitless testing. note to anybody out there: make sure to include hidden and seemingly unrelated form fields! !--> \
+                    <!-- the S.O.B. below caused a day of frustration and fruitless testing. note to anybody out there: make sure to include elements for  hidden and seemingly unrelated form fields! !--> \
                     <input type="hidden" name="button" value="login"> \
                     <input type="submit" class="primary-button" value="Log In"> \
                 </form> \
@@ -72,14 +84,14 @@ function insert_header(student_data)
     }
 }
 
-function insert_school_area(student_data)
+function insert_school_area(student_data, hidden)
 {
     window.setTimeout(create_stuy_schedule, 500);
     window.setTimeout(create_announcements_section, 500);
     //to make it load faster at first
 
      $(".content").append('\
-        <div class="school-info-area"> \
+        <div class="school-info-area' + (hidden ? " hidden" : "") + '"> \
             <div class="padding-box"> \
                 <h2>School Info </h2> \
                 <p class="loading-notice schedule-loading-notice">Loading Schedule... </p> \
@@ -97,18 +109,7 @@ function insert_school_area(student_data)
     ');
 }
 
-function insert_content(student_data, previous_content)
-{
-    $(".content").append(' \
-        <div class="page-area"> \
-            <div class="padding-box"> \
-            ' + previous_content + ' \
-            </div> \
-        </div> \
-    ');
-}
-
-function insert_personal_area(student_data, popup)
+function insert_personal_area(student_data, hidden)
 {
     if (student_data)
     {
@@ -120,11 +121,8 @@ function insert_personal_area(student_data, popup)
             }
         );
 
-        if (popup)
-            $(".your-info").addClass("aside-is-popup");
-
         $(".content").append(' \
-            <aside ' + (popup ? 'class="popup"' : '') + '> \
+            <aside ' + (hidden ? 'class="hidden"' : '') + '> \
                 <div class="padding-box"> \
                     <h2>Your Info </h2> \
                     <table> \
@@ -146,9 +144,9 @@ function insert_personal_area(student_data, popup)
                          </tr> \
                         <tr> \
                             <td>Email Addresses </td> \
-                            <td> \
+                            <td class="email-field"> \
                             ' + email_html + ' \
-                                <a class="secondary-button" href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> \
+                                <a class="secondary-button change-email" href="https://students-stuyhs.theschoolsystem.net/email.rb">Change </a> \
                             </td> \
                          </tr> \
                     </table> \
@@ -163,12 +161,61 @@ function insert_personal_area(student_data, popup)
     }
 }
 
+function insert_page_area(page_url)
+{
+    $(".content").append(' \
+        <iframe class="page-area ' + (page_url ? 'visible" src="' + page_url + '"' : '"') + ' id="page-area" frameBorder="0"> </iframe> \
+    ');
+}
+
+function insert_fonts()
+{
+    var link_node = document.createElement("link"); 
+    link_node.rel = "stylesheet";
+    link_node.href = 'https://fonts.googleapis.com/css?family=Open+Sans:400,800,700';
+    document.head.appendChild(link_node); 
+}
+
 function attach_listeners()
 {
     $(".your-info").click(
         function()
         {
             $("aside").slideToggle(300);
+        }
+    );
+
+    $("nav a").click(
+        function()
+        {
+            $(".school-info-area").hide();
+            $("aside").hide();
+            $(".page-area").show();
+
+            var url = this.href;
+            history.pushState({}, "", url);
+        }
+    );
+
+    $(".logo").click(
+        function()
+        {
+            $(".school-info-area").show();
+            $("aside").show();
+            $(".page-area").hide();
+            history.pushState({}, "Student Tools", "/student_jobs.rb");
+            return false;
+        }
+    );
+
+    $(".change-email").click(
+        function(e)
+        {
+            e.preventDefault();
+
+            history.pushState({}, "Change email address - Student Tools", this.href);
+            this.parentElement.innerHTML = '<iframe class="change-email-iframe" src="https://students-stuyhs.theschoolsystem.net/email.rb"> </iframe>';
+            restyle_email_form();
         }
     );
 }

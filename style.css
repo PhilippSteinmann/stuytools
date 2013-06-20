@@ -202,6 +202,9 @@ aside
     position: absolute;
     width: 66%;
     left: 33%;
+    height: 100%;
+
+    display: none;
 }
 
 header, .school-info-area, aside
@@ -302,10 +305,11 @@ ul
 
 li a
 {
+    display: block; /* Makes them easier to click */
     text-decoration: none;
 }
 
-form
+header form
 {
     display: inline-block;
     padding: 10px;
@@ -422,6 +426,11 @@ header input[type=submit]
     display: none;
 }
 
+.visible
+{
+    display: block;
+}
+
 .announcement-desc
 {
     display: none;
@@ -446,6 +455,12 @@ header input[type=submit]
 {
     display: none;
 }
+
+/* ========================== */
+/* INDIVIDUAL PAGE STYLING AREA */
+/* ========================== */
+
+.grade_check 
 
 /* ========================== */
 /* PERSONAL INFO AREA */
@@ -512,7 +527,7 @@ span.block + span.block
 }
 
 
-@media all and (max-width: 1366px)
+@media all and (max-width: 1080)
 {
     .school-info-area
     {
