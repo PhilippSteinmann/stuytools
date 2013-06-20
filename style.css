@@ -87,8 +87,7 @@ a:hover
 .primary-button
 {
     display: block;
-    max-width: 300px;
-    padding: 8px 0 8px 8%;
+    padding: 8px;
     margin-bottom: 8px;
     border: none;
 
@@ -169,6 +168,22 @@ a:hover
     display: block;
 }
 
+.small-input
+{
+    border: 1px solid rgb(190, 190, 190);
+    border-radius: 3px;
+    box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.175);
+
+    padding: 4px 6px;
+}
+
+.small-input:focus
+{
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 0 10px 1px rgb(0, 100, 255);
+}
+
 /* ========================== */ 
 /* PAGE STRUCTURE */
 /* ========================== */
@@ -233,7 +248,7 @@ header
 
 
 /* ========================== */
-/* header AREA */
+/* HEADER AREA */
 /* ========================== */ 
 
 header h1
@@ -303,9 +318,12 @@ ul
     padding-left: 0;
 }
 
-li a
+nav a
 {
     display: block; /* Makes them easier to click */
+    max-width: 300px;
+    padding: 8px 0 8px 8%;
+
     text-decoration: none;
 }
 
@@ -362,7 +380,7 @@ header input[type=submit]
 {
     float: right;
 
-    /* Override header button style */
+    /* Override .primary-button style */
     margin-top: 14px;
     padding: 10px 22px;
 }
@@ -487,6 +505,7 @@ aside table
 {
     margin-bottom: 20px;
     border-collapse: collapse;
+    width: 100%;
 }
 
 aside tr
@@ -501,13 +520,28 @@ aside tr:first-of-type
 
 aside td
 {
-    width: 50%;
     padding: 10px 20px;
 }
 
 aside td:first-child
 {
     font-weight: bold;
+}
+
+aside td.email-col input[type=email]
+{
+    width: 100%;
+    margin-left: 0;
+}
+
+aside td.email-col input[type=submit]
+{
+    float: right;
+}
+
+aside .error-notice
+{
+    color: rgb(200, 0, 0);
 }
 
 aside li
@@ -542,6 +576,8 @@ span.block + span.block
         display: none;
         top: 0;
         right: 40px;
+        left: 33%;
+        width: 66%;
         height: auto;
     
         background-color: white;

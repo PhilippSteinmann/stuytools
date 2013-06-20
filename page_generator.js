@@ -225,9 +225,14 @@ function attach_email_listeners()
                 emails.push(email);
             }
 
+            if (emails.length == 1)
+                emails.push("");
+
             $("td.email-col").html(' \
             <form action="email.rb" class="email-form" method="POST"> \
-                <input type="text" name="email" value=' + emails.join(",") + '> \
+                <input type="email" class="small-input first-email" value=' + emails[0] + ' placeholder="First email address" required> \
+                <input type="email" class="small-input second-email" value="' + emails[1] + '" placeholder="Second email address"> \
+                <input type="hidden" name="email"> \
                 <input type="hidden" name="email2"> \
                 <input type="hidden" name="button" value="submit"> \
                 <input type="submit" class="primary-button" value="Submit"> \
@@ -237,9 +242,16 @@ function attach_email_listeners()
             $(".email-form").submit(
                 function(e)
                 {
-                    var user_input = $(this).find("input[name=email]").val();
-                    $(this).find("input[name=email2]").val(user_input);
-                    $("td.email-col").html("Submitting...");
+                    var first_email = $(this).find("input.first-email").val();
+                    var second_email = $(this).find("input.second-email").val();
+                    var email_value = first_email;
+                    if (second_email)
+                        email_value += "," + second_email
+
+                    $(this).find("input[name=email]").val(email_value);
+                    $(this).find("input[name=email2]").val(email_value);
+                    $("td.email-col form").hide();
+                    $("td.email-col").append("<span class='notice'>Submitting... </span>");
 
                     $.post(this.action, $(this).serialize(),
                         function(response)
@@ -248,7 +260,7 @@ function attach_email_listeners()
                             {
                                 $("td.email-col").html("");
 
-                                user_input.split(",").forEach(
+                                email_value.split(",").forEach(
                                     function(email)
                                     {
                                         $("td.email-col"). append("<span class='block'>" + email + "</span>");
@@ -260,6 +272,14 @@ function attach_email_listeners()
 
                                 attach_email_listeners(); //New elements were created, so need to reattach
                             }
+                            else
+                            {
+                                $("td.email-col form").fadeIn(400);
+                                $("td.email-col .notice").addClass("error-notice");
+                                $("td.email-col .notice").text("There's been an error.");
+
+                            }
+                                
                         } );
 
                     return false;
