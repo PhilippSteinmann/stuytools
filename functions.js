@@ -1,7 +1,32 @@
+function get_path()
+{
+    return window.location.pathname.slice(1);
+}
+
+function parse_student_name(name)
+{
+    var split_name = name.split(",");
+    var first = split_name[1].slice(1);
+    var last = split_name[0];
+
+    first = title_case(first);
+    last = title_case(last);
+
+    return {
+        first: first,
+        last: last
+    }
+}
+
+function log(x)
+{
+    console.log(x);
+}
+
 String.prototype.mindfulLowerCase = function()
 {
     var words = this.split(" ");
-    var lowercase_str = "";
+    var lowercase_str = ""; 
     var special_words = ["PSAL", "AP", "TEDxStuyvesantHS"];
     for (var i = 0; i < words.length; i++)
     { 

@@ -9,7 +9,7 @@
         {
             "matches": ["https://students-stuyhs.theschoolsystem.net/*"],
             "css": ["style.css"],
-            "js": ["jquery.js", "functions.js", "page_restyler.js", "schedule_generator.js", "announcements_generator.js", "page_generator.js", "script.js"]
+            "js": ["jquery.js", "functions.js", "schedule_generator.js", "announcements_generator.js", "page_fetcher.js", "page_parser.js", "page_generator.js", "script.js"]
         }
     ],
 
