@@ -54,12 +54,12 @@ function insert_header(student_data)
             <h1>' + student_data["name"]["first"] + " " + student_data["name"]["last"] + '</h1> \
             <nav> \
                 <ul> \
-                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb" target="test">Report Card</a> </li> \
-                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
-                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/schedule_check.rb">Schedule </a> </li> \
-                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/attendance.rb">Attendance </a> </li> \
-                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/transcripts.rb">Transcript </a> </li> \
-                    <li><a class="primary-button" target="page-area-iframe" href="https://students-stuyhs.theschoolsystem.net/teacher_rec_check.rb">Teacher Recommendations </a> </li> \
+                    <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/grade_check.rb" target="test">Report Card</a> </li> \
+                    <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/register2.rb">Elective Classes Signup </a> </li> \
+                    <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/schedule_check.rb">Schedule </a> </li> \
+                    <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/attendance.rb">Attendance </a> </li> \
+                    <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/transcripts.rb">Transcript </a> </li> \
+                    <li><a class="primary-button" href="https://students-stuyhs.theschoolsystem.net/teacher_rec_check.rb">Teacher Recommendations </a> </li> \
                 </ul> \
             </nav> \
         ');
@@ -86,8 +86,8 @@ function insert_header(student_data)
 
 function insert_school_area(student_data, hidden)
 {
-    window.setTimeout(create_stuy_schedule, 500);
-    window.setTimeout(create_announcements_section, 500);
+    window.setTimeout(create_stuy_schedule, 200);
+    window.setTimeout(create_announcements_section, 400);
     //to make it load faster at first
 
      $(".content").append('\
@@ -167,7 +167,6 @@ function insert_page_area(page_url)
         <div class="page-area"> \
             <div class="padding-box"> </div> \
          </div> \
-        <iframe class="page-area-iframe ' + (page_url ? 'visible" src="' + page_url + '"' : '"') + ' id="page-area-iframe" frameBorder="0"> </iframe> \
     ');
 }
 
@@ -188,19 +187,24 @@ function attach_listeners()
         }
     );
 
-    $("a[target=page-area-iframe]").click(
-        function()
+    $("nav a").click(
+        function(e)
         { 
+            e.preventDefault();
+
             $(".school-info-area").hide();
             $("aside").hide();
 
             var url = this.href;
+            history.pushState({}, "", url);
 
-            $(".page-area-iframe")[0].onload = 
-                function()
+            $.get(url,
+                function(response)
                 {
-                    restyle_page(url);
+                    restyle_page(response);
                 }
+            );
+
         }
     );
 
@@ -213,15 +217,6 @@ function attach_listeners()
             history.pushState({}, "Student Tools", "/student_jobs.rb");
             return false;
         } );
-
-    $(".page-area-iframe").load(
-        function()
-        {
-            var url = this.contentWindow.location.href;
-            history.pushState({}, "", url);
-            restyle_page();
-        }
-    );
 
     attach_email_listeners();
 }

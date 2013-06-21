@@ -212,7 +212,7 @@ aside
     left: 66%;
 }
 
-.page-area, .page-area-iframe
+.page-area
 {
     position: absolute;
     width: 66%;

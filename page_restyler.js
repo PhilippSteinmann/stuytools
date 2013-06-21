@@ -1,18 +1,27 @@
-function restyle_page()
+function restyle_page(html)
 {
+    $(".page-area").show();
     var path = window.location.pathname;
     if (path == "/grade_check.rb")
-        restyle_grade_check();
+        restyle_grade_check(html);
     else
-        $(".page-area-iframe").show();
+        inject_into_page_area(html);
 }
 
-function restyle_grade_check()
+function restyle_grade_check(html)
 {
-    var iframe = $(".page-area-iframe")[0];
-    var body = iframe.contentDocument.querySelector("body");
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(html, "text/html");
+
+    var body = doc.body;
 
     var tables = body.querySelectorAll("table");
+    if (tables.length == 0)
+    {
+        inject_into_page_area(html);
+        return;
+    }
+        
     navigation_table = tables[0];
     report_card_table = tables[1];
 
@@ -33,14 +42,12 @@ function restyle_grade_check()
 
     var nav_html = '\
         <nav> \
-            <a href="' + prev_href + '" class="secondary-button ' + (prev_href ? "" : "disabled") + '" target="page-area-iframe">Prev. Term </a> \
-            <a href="' + next_href + '" class="secondary-button ' + (next_href ? "" : "disabled") + '" target="page-area-iframe">Next Term </a> \
+            <a href="' + prev_href + '" class="secondary-button ' + (prev_href ? "" : "disabled") + '" >Prev. Term </a> \
+            <a href="' + next_href + '" class="secondary-button ' + (next_href ? "" : "disabled") + '" >Next Term </a> \
         </nav> \
     ';
 
     inject_into_page_area(nav_html);
-    $(".page-area").show();
-    $(".page-area-iframe").hide();
 }
 
 function inject_into_page_area(html)
