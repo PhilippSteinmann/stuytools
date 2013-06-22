@@ -1,27 +1,33 @@
-function get_path()
-{
-    return window.location.pathname.slice(1);
-}
+var Utils = (function() {
+    var obj = {}
 
-function parse_student_name(name)
-{
-    var split_name = name.split(",");
-    var first = split_name[1].slice(1);
-    var last = split_name[0];
+    obj.get_path = function()
+    {
+        return window.location.pathname.slice(1);
+    };
 
-    first = title_case(first);
-    last = title_case(last);
+    obj.parse_student_name = function(name)
+    {
+        var split_name = name.split(",");
+        var first = split_name[1].slice(1);
+        var last = split_name[0];
 
-    return {
-        first: first,
-        last: last
-    }
-}
+        first = title_case(first);
+        last = title_case(last);
 
-function log(x)
-{
-    console.log(x);
-}
+        return {
+            first: first,
+            last: last
+        }
+    };
+
+    obj.log = function(x)
+    {
+        console.log(x);
+    };
+
+    return obj;
+}());
 
 String.prototype.mindfulLowerCase = function()
 {

@@ -1,33 +1,19 @@
-function initialize_tabs(path)
-{
-    var path = get_path();
+var PageFetcher = (function() {
+    var obj = {};
 
-    var tabs = {};
-    var pages = ["student_jobs.rb", "grade_check.rb"];
+    obj.add_current_page = function()
+    {
+        current_doc = document;
+        current_text = document.documentElement.innerText;
 
-    pages.forEach(
-        function(page)
-        {
-            tabs[page] = {
-                old_doc: false,
-                page_data: {},
-                restyled_html: ""
-            };
-        }
-    );
+        if (!current_text)
+            StuyTools.logged_in = false;
 
-    return tabs;
-}
+        var current_path = StuyTools.path;
 
-function add_current_page_to_tabs(tabs, path)
-{
-    var page_content = document;
-
-    tabs[path] = {
-        old_doc: page_content,
-        page_data: {},
-        restyled_html: ""
+        StuyTools.tabs[current_path].old_doc = current_doc;
+        StuyTools.tabs[current_path].old_text = current_text;
     };
 
-    return tabs;
-}
+    return obj;
+}());
